@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Buyback Watch</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="waiting">
+
+  <!-- SETUP: needs the Cloudflare Worker URL once -->
+  <section id="setup" class="screen" hidden>
+    <h1>One-time setup</h1>
+    <p class="muted">Paste the URL of your Cloudflare Worker (ends in <code>.workers.dev</code>).<br>
+      It's what lets this page read the TreasuryDirect PDF. Saved in this browser only.</p>
+    <input id="workerInput" type="url" placeholder="https://buyback-proxy.yourname.workers.dev" autocomplete="off" spellcheck="false" />
+    <div class="controls">
+      <button id="workerSave" type="button">Save &amp; start</button>
+    </div>
+    <p id="workerErr" class="detail warn" hidden></p>
+    <p class="hint">Setup steps are in <code>HOSTED-SETUP.md</code> in the repo.</p>
+  </section>
+
+  <!-- WAITING / ERROR -->
+  <section id="waiting" class="screen" hidden>
+    <div class="pulse-dot"></div>
+    <h1>Watching TreasuryDirect</h1>
+    <p id="statusLine">Connecting&hellip;</p>
+
+    <dl class="meta">
+      <div><dt>Checks run</dt><dd id="checkCount">0</dd></div>
+      <div><dt>Last check</dt><dd id="lastCheck">&mdash;</dd></div>
+      <div><dt>Last status</dt><dd id="httpStatus">&mdash;</dd></div>
+    </dl>
+
+    <a id="targetUrl" class="target" href="#" target="_blank" rel="noopener"></a>
+
+    <div class="legend">
+      <span>Colour by size:</span>
+      <b class="t-blue">&lt; $1B</b>
+      <b class="t-green">$1B&ndash;$3B</b>
+      <b class="t-orange">$3B&ndash;$5B</b>
+      <b class="t-red">$5B&ndash;$10B</b>
+      <b class="t-darkred">&ge; $10B</b>
+    </div>
+
+    <div class="controls">
+      <button id="enableBtn" type="button">&#128276; Enable sound + notifications</button>
+      <button id="testBtn" type="button" class="ghost">Preview alert</button>
+      <button id="resetWorker" type="button" class="ghost">Change Worker URL</button>
+    </div>
+    <p class="hint">Keep this tab open. Click <b>Enable</b> once so the browser lets the alert make noise and pop a notification.</p>
+  </section>
+
+  <!-- ALERT -->
+  <section id="alert" class="screen" hidden>
+    <p class="kicker">TREASURY BUYBACK ANNOUNCED</p>
+    <div id="bigAmount" class="big">&mdash;</div>
+    <div id="fullAmount" class="full"></div>
+    <p id="opType" class="optype"></p>
+    <p id="tier" class="tierline"></p>
+    <p id="maturity" class="detail"></p>
+    <p id="opDate" class="detail"></p>
+    <p id="detectedAt" class="detail dim"></p>
+    <p id="parseNote" class="detail warn" hidden>Couldn&rsquo;t auto-read the amount &mdash; open the PDF to confirm.</p>
+    <div class="controls">
+      <a id="pdfLink" class="btn" href="#" target="_blank" rel="noopener">Open the PDF</a>
+      <button id="ackBtn" type="button" class="btn">Acknowledge</button>
+    </div>
+  </section>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
