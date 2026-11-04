@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Auction Watch</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="bar">
+    <div class="brand">Auction Watch</div>
+    <div id="pill" class="pill off"><span class="dot"></span><span id="pillText">Connecting&hellip;</span></div>
+    <div id="next" class="next"></div>
+    <div class="spacer"></div>
+    <div class="clocks"><span id="clockEt">&mdash;</span><span id="clockLocal">&mdash;</span></div>
+    <select id="history" aria-label="Show a result" hidden></select>
+    <button id="soundBtn" type="button">Enable sound</button>
+  </header>
+
+  <section id="strip" class="strip" hidden>
+    <div class="ident">
+      <span id="tag" class="tag">NEW</span>
+      <div>
+        <div id="title" class="title"></div>
+        <div id="sub" class="sub"></div>
+      </div>
+    </div>
+    <div id="metrics" class="metrics"></div>
+    <div class="links">
+      <button id="ackBtn" type="button" class="ack">Got it</button>
+      <a id="openLocal" href="#" target="_blank" rel="noopener">Open PDF</a>
+      <a id="openWeb" href="#" target="_blank" rel="noopener">TreasuryDirect</a>
+    </div>
+  </section>
+
+  <main class="viewer">
+    <iframe id="pdf" title="Auction results PDF" src="about:blank"></iframe>
+    <div id="empty" class="empty">
+      <div class="pulse"></div>
+      <h1 id="emptyTitle">Waiting for the results PDF</h1>
+      <p id="emptyText">It will appear here the moment TreasuryDirect posts it.</p>
+    </div>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,7 +1,8 @@
 @echo off
 REM Double-click to start the Treasury auction-results watcher.
-REM Waits for the next 1:00 PM ET auction, grabs the results PDF the moment
-REM TreasuryDirect posts it, and opens it. Keep this window open; Ctrl+C stops it.
+REM Opens the results page (http://localhost:8845/), waits for the next 1:00 PM ET
+REM auction, and puts the results PDF on the page the moment TreasuryDirect posts it.
+REM Keep this window open; Ctrl+C stops it.
 REM Extra options can be passed on, e.g.  RUN-auction-watch.cmd -CloseTime "11:30 AM"
 
 set "HERE=%~dp0"
