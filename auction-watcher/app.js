@@ -209,7 +209,7 @@ function renderStatus() {
 
   if (!state || !lastOk || !(now - hb < STALE_MS)) {
     cls = 'off';
-    text = 'Watcher not running — double-click RUN-auction-watch.cmd';
+    text = 'Watcher not running — double-click the Auction Watch icon on your desktop';
   } else {
     switch (state.phase) {
       case 'countdown':
@@ -249,7 +249,7 @@ function renderStatus() {
   if (!$('empty').hidden) {
     if (cls === 'off') {
       $('emptyTitle').textContent = 'Watcher not running';
-      $('emptyText').textContent = 'Double-click RUN-auction-watch.cmd. This page will connect by itself.';
+      $('emptyText').textContent = 'Double-click the Auction Watch icon on your desktop. This page reconnects by itself.';
     } else {
       $('emptyTitle').textContent = 'Waiting for the results PDF';
       $('emptyText').textContent = s

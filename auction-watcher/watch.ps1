@@ -46,6 +46,7 @@ param(
   [switch]$NoSound,                  # (no-page mode) no console beep
   [switch]$Demo,                     # test: drop the most recent published result onto the page now
   [string]$Replay,                   # test: re-run drop detection against a past auction date
+  [switch]$Background,               # no console (started by open.ps1): log to data\watch.log, don't open the browser
   [string]$DataDir
 )
 
@@ -66,8 +67,25 @@ $EtZone = [TimeZoneInfo]::FindSystemTimeZoneById('Eastern Standard Time')
 $UsePage      = -not $NoPage
 $OpenExternal = (-not $NoOpen) -and ($NoPage -or $OpenPdf)
 $StatePath    = Join-Path $DataDir 'state.json'
+$LogPath      = Join-Path $DataDir 'watch.log'
 $Utf8NoBom    = New-Object System.Text.UTF8Encoding($false)
 $pageUrl      = $null
+if ($Background) { $NoBrowser = $true }
+
+# One watcher per data folder: a second copy would fight over state.json and the page port.
+# If one is already running (e.g. in the background), just open its page and leave.
+$mutexId = [BitConverter]::ToString((New-Object Security.Cryptography.SHA1Managed).ComputeHash(
+    [Text.Encoding]::UTF8.GetBytes($DataDir.ToLowerInvariant()))).Replace('-', '').Substring(0, 16)
+$script:Mutex = New-Object System.Threading.Mutex($false, "Local\AuctionWatcher-$mutexId")
+$owned = $false
+try { $owned = $script:Mutex.WaitOne(0) } catch { $owned = $true }   # abandoned by a killed watcher = ours now
+if (-not $owned) {
+  Write-Host "Auction Watch is already running (maybe in the background) - its page: http://localhost:$Port/" -ForegroundColor Cyan
+  if ($Demo -or $Replay) { Write-Host 'Stop it first with STOP-auction-watch.cmd to use -Demo / -Replay.' -ForegroundColor Yellow }
+  elseif (-not $NoBrowser) { try { Start-Process "http://localhost:$Port/" } catch {} }
+  exit 0
+}
+if ($Background -and (Test-Path $LogPath) -and (Get-Item $LogPath).Length -gt 2MB) { Move-Item -Force $LogPath "$LogPath.old" }
 
 # ---- small helpers -------------------------------------------------------------
 
@@ -120,6 +138,7 @@ function ConvertTo-CloseKey([string]$s) {
 # One-line status that rewrites itself in place; Write-Line starts a fresh line.
 $script:statusOn = $false
 function Write-Status([string]$t) {
+  if ($Background) { return }
   $w = 79
   try { $w = [Math]::Max(40, $Host.UI.RawUI.WindowSize.Width - 1) } catch {}
   if ($t.Length -gt $w) { $t = $t.Substring(0, $w) }
@@ -129,6 +148,9 @@ function Write-Status([string]$t) {
 function Write-Line([string]$t = '', [string]$Color = 'Gray') {
   if ($script:statusOn) { Write-Host ''; $script:statusOn = $false }
   Write-Host $t -ForegroundColor $Color
+  if ($Background) {
+    try { [IO.File]::AppendAllText($LogPath, (Get-Date).ToString('yyyy-MM-dd HH:mm:ss') + '  ' + $t + "`r`n", $Utf8NoBom) } catch {}
+  }
 }
 
 function Set-Title([string]$t) { try { $Host.UI.RawUI.WindowTitle = $t } catch {} }
@@ -450,7 +472,10 @@ function New-ResultRecord($target, [string]$file, [string]$localPdf, $detectedEt
 }
 
 # A drop: put it on the page first (fastest), then print + fetch the numbers.
+$script:Opened = @{}
 function Open-Result($target, [string]$file, [string]$tmpPath, [datetime]$detectedEt, $closeEt) {
+  if ($script:Opened.ContainsKey($file)) { Remove-Item $tmpPath -ErrorAction SilentlyContinue; return }   # never alert twice for one file
+  $script:Opened[$file] = $true
   $final = Get-FinalPath $target $file
   Move-Item -Force -Path $tmpPath -Destination $final
   $rec = New-ResultRecord $target $file $final $detectedEt $closeEt $true
@@ -677,12 +702,14 @@ if ($pageUrl) { Write-Line "  Page       : $pageUrl   <-- keep this open; the PD
 Write-Line "  Saves to   : $DataDir"
 if ($OpenExternal) { Write-Line '  PDF viewer : opens each new result too' }
 if (-not $Pdftotext) { Write-Line '  (pdftotext not found - will identify PDFs from the XML instead)' DarkGray }
-Write-Line '  Leave this window open. Ctrl+C to stop.'
+if ($Background) { Write-Line '  Running in the background (no window). STOP-auction-watch.cmd stops it.' }
+else { Write-Line '  Leave this window open. Ctrl+C to stop.' }
 
 $doneKeys = @{}
 $shown = $null
 $prevLoaded = $false
 while ($true) {
+ try {   # an unexpected error must never kill a watcher that's meant to run for days
   try { $all = @(Get-Auctions) }
   catch {
     $msg = "Couldn't read the TreasuryDirect schedule ($($_.Exception.Message)) - retrying in 60 s"
@@ -747,5 +774,11 @@ while ($true) {
   $doneKeys[$s.Key] = $true
   if ($Once -or $DateFilter) { break }
   Write-Line 'Looking for the next one...' DarkCyan
+ } catch {
+  $msg = "Unexpected error: $($_.Exception.Message) - carrying on in 30 s"
+  Write-Line ("  {0}  {1}" -f (Format-Et (Get-NowEt)), $msg) Yellow
+  try { Set-Phase 'error' $msg } catch {}
+  Start-Sleep -Seconds 30
+ }
 }
 Wait-Forever 'Finished watching.'

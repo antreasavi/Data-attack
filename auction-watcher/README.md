@@ -6,10 +6,33 @@ open**. The PDF appears there the moment it is posted, with the headline numbers
 
 By default it watches the **1:00 PM ET** note/bond auctions.
 
-## Run it
+## The link
 
-Double‑click **`RUN-auction-watch.cmd`**. It opens **http://localhost:8845/** in your
-browser and keeps a small window running. Leave both open.
+**http://localhost:8845/** works whenever the watcher is running. The page is served by
+the watcher itself, so if nothing is running the browser says it can't connect.
+
+The reliable way to open it is the **Auction Watch** icon on your desktop. Each click:
+
+1. checks whether the watcher is running, and if not starts it **in the background**
+   (no window to close by accident),
+2. opens the page.
+
+Clicking it again never starts a second copy. If the watcher was killed or the PC
+restarted, the next click brings it back in a few seconds.
+
+Set the icon up (or again, if you move this folder):
+
+```bash
+powershell -ExecutionPolicy Bypass -File install-shortcuts.ps1
+```
+
+Add `-Startup` to also start the watcher silently when you sign in to Windows, so a
+bookmarked `http://localhost:8845/` works straight after a reboot. `-Remove` takes both
+shortcuts away. **`STOP-auction-watch.cmd`** stops the background watcher; its log is
+`data\watch.log`.
+
+Prefer a console window you can watch? Double‑click **`RUN-auction-watch.cmd`** instead.
+It runs the same watcher with a visible window, and opens the page too.
 
 On the page, click **Enable sound** once (browsers only allow a page to make noise after a click).
 
@@ -92,10 +115,14 @@ come from the matching results XML
 
 | File | Job |
 |------|-----|
-| `RUN-auction-watch.cmd` | double‑click launcher |
-| `watch.ps1` | schedule, polling, download, CUSIP check, `state.json`, and the page server |
+| `install-shortcuts.ps1` | creates the desktop icon (and, with `-Startup`, the sign‑in start) |
+| `open.ps1` | what the desktop icon runs: start the watcher in the background if needed, open the page |
+| `RUN-auction-watch.cmd` | console launcher (visible window) |
+| `STOP-auction-watch.cmd` / `stop.ps1` | stop the watcher, including a background one |
+| `watch.ps1` | schedule, polling, download, CUSIP check, `state.json`, and the page server. Only one copy runs per data folder |
+| `auction-watch.ico` | the desktop icon |
 | `index.html` / `app.js` / `style.css` | the results page |
-| `data/` | downloaded PDFs + `state.json` (git‑ignored) |
+| `data/` | downloaded PDFs, `state.json`, `watch.log` (git‑ignored) |
 
 ## Notes
 
