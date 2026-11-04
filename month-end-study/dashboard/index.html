@@ -1,0 +1,962 @@
+<meta name="dash-one-writer">
+<style>
+.me-page { display: grid; gap: var(--cds-gap-xl); font-family: var(--font-anthropic-sans); color: var(--color-fg); }
+.me-page b { font-weight: 600; font-variant-numeric: tabular-nums; }
+.me-head { display: grid; gap: var(--cds-gap-sm); max-width: 74ch; }
+.me-head h1 { margin: 0; font-family: var(--font-anthropic-serif); font-weight: 400; font-size: var(--cds-font-size-title); line-height: 1.15; text-wrap: balance; }
+.me-take { margin: 0; font-size: var(--cds-font-size-body); line-height: 1.6; }
+.me-muted { margin: 0; color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); line-height: 1.5; }
+.me-tiles { display: grid; gap: var(--cds-gap-md); grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)); }
+.me-tile, .me-card { background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-lg); display: grid; gap: var(--cds-gap-xs); align-content: start; min-width: 0; }
+.me-card { gap: var(--cds-gap-sm); }
+.me-tile-label { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+.me-big { font-family: var(--font-anthropic-serif); font-size: var(--cds-font-size-title); font-weight: 400; font-variant-numeric: tabular-nums; line-height: 1.2; }
+.me-page .me-big b { font-weight: 400; }
+.me-section { display: grid; gap: var(--cds-gap-md); min-width: 0; }
+.me-section > h2 { margin: 0; font-size: var(--cds-font-size-heading); font-weight: var(--cds-font-weight-medium); text-wrap: balance; }
+.me-card h3 { margin: 0; font-size: var(--cds-font-size-heading); font-weight: var(--cds-font-weight-medium); }
+.me-grid { display: grid; gap: var(--cds-gap-md); grid-template-columns: repeat(auto-fit, minmax(min(100%, 26rem), 1fr)); }
+.me-chart { position: relative; min-height: 290px; }
+.me-heat { position: relative; min-height: 420px; }
+.me-chart svg, .me-heat svg { display: block; overflow: visible; }
+.me-page svg text { font-family: var(--font-anthropic-sans); font-size: 12px; fill: var(--color-fg-muted); }
+.me-page svg text.strong { fill: var(--color-fg); font-weight: 600; }
+.me-page svg text.cellv { fill: var(--color-fg); font-variant-numeric: tabular-nums; }
+.me-page svg text.faint { fill: var(--color-fg-muted); }
+.me-heat .cell { cursor: pointer; }
+.me-heat .cell:focus { outline: none; }
+.me-heat .cell:focus-visible rect { stroke: var(--color-fg); stroke-width: 2; }
+.me-tip { position: absolute; pointer-events: none; background: var(--cds-surface-popover); border: 1px solid var(--cds-border); border-radius: var(--cds-radius); box-shadow: var(--cds-shadow-popover); padding: var(--cds-pad-xs) var(--cds-pad-sm); font-size: var(--cds-font-size-caption); line-height: 1.5; white-space: nowrap; z-index: 3; }
+.me-tip .k { color: var(--cds-text-secondary); }
+.me-tip .sw { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin-right: 6px; }
+.me-controls { display: flex; flex-wrap: wrap; gap: var(--cds-gap-sm); align-items: center; }
+.me-seg { display: inline-flex; border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); overflow: hidden; }
+.me-seg button { font: inherit; font-size: var(--cds-font-size-caption); background: var(--color-bg); color: var(--color-fg); border: 0; padding: var(--cds-pad-xs) var(--cds-pad-sm); cursor: pointer; }
+.me-seg button + button { border-left: 1px solid var(--color-border-line); }
+.me-seg button[aria-pressed="true"] { background: var(--color-fg); color: var(--color-bg); }
+.me-seg button:focus-visible, .me-controls select:focus-visible, .me-controls input:focus-visible, .me-table button:focus-visible { outline: 2px solid var(--color-fg); outline-offset: 1px; }
+.me-controls select, .me-controls input[type="search"] { font: inherit; font-size: var(--cds-font-size-caption); padding: var(--cds-pad-xs) var(--cds-pad-sm); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); background: var(--color-bg); color: var(--color-fg); max-width: 100%; min-width: 0; }
+.me-controls label { display: inline-flex; gap: 6px; align-items: center; }
+.me-scroll { overflow: auto; max-height: 36rem; }
+.me-scroll.fit { max-height: none; }
+.me-table { border-collapse: collapse; width: 100%; font-size: var(--cds-font-size-caption); font-variant-numeric: tabular-nums; }
+.me-table th, .me-table td { padding: 6px 10px; text-align: right; border-bottom: 1px solid var(--color-border-line); white-space: nowrap; }
+.me-table th:first-child, .me-table td:first-child, .me-table th.l, .me-table td.l { text-align: left; }
+.me-table thead th { position: sticky; top: 0; background: var(--color-panel); font-weight: var(--cds-font-weight-medium); color: var(--color-fg-muted); z-index: 1; }
+.me-table th button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+.me-table th[aria-sort] button { color: var(--color-fg); }
+.me-table tbody tr.pick { cursor: pointer; }
+.me-table tbody tr.pick:hover td, .me-table tbody tr.sel td { background: var(--cds-chart-grid); }
+.me-chart .hit { cursor: pointer; }
+.me-v { display: inline-block; padding: 0 8px; border-radius: 999px; border: 1px solid currentColor; line-height: 1.6; }
+.me-v.strong { color: var(--color-ok); }
+.me-v.promising { color: var(--color-warn); }
+.me-v.weak, .me-v.none, .me-v.few { color: var(--color-fg-muted); border-color: transparent; padding: 0; }
+.pos { color: var(--color-ok); }
+.neg { color: var(--color-bad); }
+.me-legend { display: flex; flex-wrap: wrap; gap: var(--cds-gap-sm) var(--cds-gap-md); font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+.me-legend span { display: inline-flex; align-items: center; gap: 6px; }
+.me-sw { width: 12px; height: 12px; border-radius: 2px; display: inline-block; }
+.me-sw.up { background: var(--color-ok); }
+.me-sw.down { background: var(--color-bad); }
+.me-sw.ring { border: 1.5px solid var(--color-warn); }
+.me-method { display: grid; gap: var(--cds-gap-sm); max-width: 78ch; }
+.me-method p, .me-method li { margin: 0; line-height: 1.6; font-size: var(--cds-font-size-body); }
+.me-method ul { margin: 0; padding-left: 1.2em; display: grid; gap: var(--cds-gap-xs); }
+.me-method h3 { margin: var(--cds-gap-sm) 0 0; font-size: var(--cds-font-size-body); font-weight: var(--cds-font-weight-medium); }
+.me-fail { display: flex; align-items: center; justify-content: center; gap: 6px; color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); min-height: inherit; }
+.me-fail::before { content: ""; width: .375rem; height: .375rem; border-radius: 50%; background: var(--color-bad); }
+.me-empty { display: flex; align-items: center; justify-content: center; color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); min-height: inherit; }
+[data-dash-source-state=refreshing] { opacity: .5; transition: opacity var(--cds-dur-slow); }
+[data-dash-source-state=empty] { color: transparent; }
+</style>
+
+<div class="me-page">
+  <header class="me-head" id="top">
+    <h1>Month-end close study</h1>
+    <p class="me-take">None of the <b data-draw="val" data-source="verdicts" data-field="tests" data-where="verdict=All" data-fmt="int">—</b> product-and-window tests clears a strict check for chance once every test is counted. One pattern still repeats across currencies and years. On the last business day of the month, the dollar tends to weaken in the 30 minutes before the London 4pm fix, then win part of it back in the 30 minutes after.</p>
+    <p class="me-muted">The MarketWatch futures and CFDs, read from Sierra Chart tick data. Each month-end is compared with the same clock window on every other weekday. Moves are in basis points: 1 bp is 0.01%. Currency futures are quoted in dollars per unit of foreign currency, so up means a weaker dollar.</p>
+  </header>
+
+  <div class="me-tiles" id="headline">
+    <div class="me-tile">
+      <span class="me-tile-label">British pound (6B), 30 min before the 4pm fix</span>
+      <span class="me-big"><b data-draw="val" data-source="stats" data-field="mean" data-where="id=6B|FIX|pre" data-fmt="bp">—</b> bp</span>
+      <span class="me-muted">Up in <b data-draw="val" data-source="stats" data-field="hit" data-where="id=6B|FIX|pre" data-fmt="pct">—</b> of <b data-draw="val" data-source="stats" data-field="n" data-where="id=6B|FIX|pre" data-fmt="int">—</b> month-ends since <b data-draw="val" data-source="coverage" data-field="first" data-where="root=6B" data-fmt="year">—</b>. Last 12: <b data-draw="val" data-source="stats" data-field="last12_mean" data-where="id=6B|FIX|pre" data-fmt="bp">—</b> bp, up in <b data-draw="val" data-source="stats" data-field="last12_hit" data-where="id=6B|FIX|pre" data-fmt="pct">—</b>.</span>
+    </div>
+    <div class="me-tile">
+      <span class="me-tile-label">Australian dollar (6A), 30 min before the 4pm fix</span>
+      <span class="me-big"><b data-draw="val" data-source="stats" data-field="mean" data-where="id=6A|FIX|pre" data-fmt="bp">—</b> bp</span>
+      <span class="me-muted">Up in <b data-draw="val" data-source="stats" data-field="hit" data-where="id=6A|FIX|pre" data-fmt="pct">—</b> of <b data-draw="val" data-source="stats" data-field="n" data-where="id=6A|FIX|pre" data-fmt="int">—</b> month-ends, on <b data-draw="val" data-source="stats" data-field="vol_ratio" data-where="id=6A|FIX|pre" data-fmt="x">—</b> normal volume. Normal days: <b data-draw="val" data-source="stats" data-field="base_mean" data-where="id=6A|FIX|pre" data-fmt="bp">—</b> bp.</span>
+    </div>
+    <div class="me-tile">
+      <span class="me-tile-label">Currency basket, 30 min after the 4pm fix</span>
+      <span class="me-big"><b data-draw="val" data-source="stats" data-field="mean" data-where="id=FXB|FIX|post" data-fmt="bp">—</b> bp</span>
+      <span class="me-muted">Up in only <b data-draw="val" data-source="stats" data-field="hit" data-where="id=FXB|FIX|post" data-fmt="pct">—</b> of <b data-draw="val" data-source="stats" data-field="n" data-where="id=FXB|FIX|post" data-fmt="int">—</b> month-ends: after the fix the dollar usually wins some of it back. p = <b data-draw="val" data-source="stats" data-field="p" data-where="id=FXB|FIX|post" data-fmt="p">—</b>.</span>
+    </div>
+    <div class="me-tile">
+      <span class="me-tile-label">5-year Treasury (ZF), 30 min before the US close</span>
+      <span class="me-big"><b data-draw="val" data-source="stats" data-field="mean" data-where="id=ZF|US|pre" data-fmt="bp">—</b> bp</span>
+      <span class="me-muted">The strongest single test: up in <b data-draw="val" data-source="stats" data-field="hit" data-where="id=ZF|US|pre" data-fmt="pct">—</b> of <b data-draw="val" data-source="stats" data-field="n" data-where="id=ZF|US|pre" data-fmt="int">—</b>, on <b data-draw="val" data-source="stats" data-field="vol_ratio" data-where="id=ZF|US|pre" data-fmt="x">—</b> normal volume. It has faded: last 12 month-ends average <b data-draw="val" data-source="stats" data-field="last12_mean" data-where="id=ZF|US|pre" data-fmt="bp">—</b> bp.</span>
+    </div>
+  </div>
+
+  <section class="me-section" id="next">
+    <h2>Next month-end: <span data-draw="nextday">—</span></h2>
+    <div class="me-tiles">
+      <div class="me-tile">
+        <span class="me-tile-label">4pm fix window, London time</span>
+        <span class="me-big" data-draw="win" data-ref="FIX">—</span>
+      </div>
+      <div class="me-tile">
+        <span class="me-tile-label">UK close window, London time</span>
+        <span class="me-big" data-draw="win" data-ref="UK">—</span>
+      </div>
+      <div class="me-tile">
+        <span class="me-tile-label">US close window, London time</span>
+        <span class="me-big" data-draw="win" data-ref="US">—</span>
+      </div>
+    </div>
+    <p class="me-muted">The last weekday of the month, shown in London time with daylight saving applied for each city. Bank holidays and early closes are not checked here; the study itself skips holidays and uses the 13:00 New York close after Thanksgiving and the 12:30 London close on the last business day of December.</p>
+  </section>
+
+  <section class="me-section" id="plans">
+    <h2>Trade plans for the Promising tests</h2>
+    <p class="me-take">Each Promising test, replayed as a trade: in its direction, out on the clock, with a stop a set number of ticks from the entry. Every result here is after costs. A plan reads Holds up when it still makes at least <b data-draw="val" data-source="plans" data-field="read_min" data-where="id=6B|FIX|pre">—</b> tick a trade with no stop and has made money over the last 12 month-ends.</p>
+    <p class="me-muted">Costs are <b data-draw="val" data-source="plans" data-field="slippage" data-where="id=6B|FIX|pre">—</b> tick of slippage plus <b data-draw="val" data-source="plans" data-field="commission" data-where="id=6B|FIX|pre" data-fmt="usd">—</b> commission per round turn. Net is per trade, in ticks (bp for the currency basket). Heat is how far price went against the entry before the exit: 8 in 10 month-ends stayed within the figure shown. The UK close's 30 minutes before is the same half hour as the fix's 30 minutes after, so those rows are one trade on two clocks. Select a row to see its plan.</p>
+    <div class="me-card">
+      <div class="me-scroll fit">
+        <table class="me-table" data-source="plans" data-row-key="id" id="tp-table">
+          <thead><tr>
+            <th data-field="root">Product</th>
+            <th data-field="direction" class="l">Trade</th>
+            <th data-field="reference" class="l">Reference</th>
+            <th data-field="when" class="l">Window</th>
+            <th data-field="read" class="l">Read</th>
+            <th data-field="months">Month-ends</th>
+            <th data-field="chk_check" class="l">Second check</th>
+            <th data-field="simple_net">No stop, net</th>
+            <th data-field="simple_win">Win rate</th>
+            <th data-field="mae_p80">Heat</th>
+            <th data-field="simple_worst">Worst</th>
+            <th data-field="simple_last12">Last 12, net</th>
+            <th data-field="entry_clock" class="l">Plan entry</th>
+            <th data-field="exit_clock" class="l">Plan exit</th>
+            <th data-field="stop">Stop</th>
+            <th data-field="plan_net_ticks">Plan net</th>
+            <th data-field="plan_net_value">Plan net, money</th>
+            <th data-field="plan_win">Plan win rate</th>
+            <th data-field="plan_worst">Plan worst</th>
+            <th data-field="per_risk">Net per tick risked</th>
+            <th data-field="oos_net">Out of sample net</th>
+          </tr></thead>
+          <tbody data-draw="tplans"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="me-controls" id="tp-detail">
+      <select data-draw="tpick" data-source="plans" aria-label="Trade plan"></select>
+      <select data-draw="tstop" data-source="grid plans" aria-label="Stop"></select>
+    </div>
+    <div class="me-grid">
+      <div class="me-card">
+        <h3>Net per trade by entry and exit</h3>
+        <p class="me-muted">The average result after costs at the chosen stop, for entries and exits every <b data-draw="val" data-source="plans" data-field="step" data-where="id=6B|FIX|pre">—</b> minutes. Rows are entries, columns exits. A thin outline marks the plan in the table, a heavy one the selected cell. Select a cell to see its stops.</p>
+        <div class="me-legend">
+          <span><i class="me-sw up"></i>Makes money</span>
+          <span><i class="me-sw down"></i>Loses money</span>
+        </div>
+        <div class="me-chart dash-skeleton" data-draw="theat" data-source="grid plans"></div>
+      </div>
+      <div class="me-card">
+        <h3>Net per trade at each stop</h3>
+        <p class="me-muted">For the selected entry and exit. A tighter stop loses less on the bad month-ends but is knocked out of more of the good ones. Select a bar to use that stop.</p>
+        <div class="me-chart dash-skeleton" data-draw="tstops" data-source="grid plans"></div>
+      </div>
+    </div>
+    <div class="me-card">
+      <h3>Every month-end, trading the plan</h3>
+      <p class="me-muted">The plan in the table at each month-end, after costs. Faded bars were stopped out. The dashed line is the average.</p>
+      <div class="me-chart dash-skeleton" data-draw="tmonths" data-source="trades plans"></div>
+    </div>
+  </section>
+
+  <section class="me-section" id="map">
+    <h2>Every product, every window</h2>
+    <div class="me-card">
+      <p class="me-muted">Each cell is the average month-end move in that window. The deeper the color, the more consistent the move (its t-statistic). Faint cells have under a year of month-ends. Select a cell to see its detail.</p>
+      <div class="me-legend">
+        <span><i class="me-sw up"></i>Up</span>
+        <span><i class="me-sw down"></i>Down</span>
+        <span><i class="me-sw ring"></i>Rated Promising</span>
+      </div>
+      <div class="me-heat dash-skeleton" data-draw="heat" data-source="stats"></div>
+    </div>
+  </section>
+
+  <section class="me-section" id="detail">
+    <h2>Detail</h2>
+    <div class="me-controls">
+      <select data-draw="pick" data-source="coverage" aria-label="Product" id="me-pick"></select>
+      <div class="me-seg" role="group" aria-label="Reference time">
+        <button type="button" data-session="FIX" aria-pressed="true">4pm fix</button>
+        <button type="button" data-session="UK" aria-pressed="false">UK close</button>
+        <button type="button" data-session="US" aria-pressed="false">US close</button>
+      </div>
+    </div>
+    <div class="me-card">
+      <div class="me-scroll fit">
+        <table class="me-table" data-source="stats" data-row-key="id">
+          <thead><tr>
+            <th data-field="when">Window</th>
+            <th data-field="verdict" class="l">Verdict</th>
+            <th data-field="n">Month-ends</th>
+            <th data-field="mean">Avg bp</th>
+            <th data-field="hit">% up</th>
+            <th data-field="p">p</th>
+            <th data-field="base_mean">Normal days bp</th>
+            <th data-field="welch_p">vs normal p</th>
+            <th data-field="last12_mean">Last 12 bp</th>
+            <th data-field="last12_hit">Last 12 % up</th>
+            <th data-field="mean_ticks">Avg ticks</th>
+            <th data-field="mean_value">Avg per contract</th>
+            <th data-field="vol_ratio">Volume vs normal</th>
+          </tr></thead>
+          <tbody data-draw="sel"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="me-grid">
+      <div class="me-card">
+        <h3>Average path through the hour</h3>
+        <p class="me-muted">bp from the price 30 minutes before the reference time, averaged minute by minute. The dashed line is the reference time.</p>
+        <div class="me-chart dash-skeleton" data-draw="path" data-source="paths"></div>
+      </div>
+      <div class="me-card">
+        <h3>Every month-end</h3>
+        <p class="me-muted">The move in the 30 minutes before and the 30 minutes after the reference time, one pair of bars per month.</p>
+        <div class="me-chart dash-skeleton" data-draw="bars" data-source="events"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="me-section" id="ranking">
+    <h2>All tests, ranked</h2>
+    <div class="me-card">
+      <p class="me-muted">Ranked by verdict, then by consistency. q is the p-value after correcting for the number of tests run. Halves split each product's month-ends into earlier and later. Select a row to see its detail.</p>
+      <div class="me-controls">
+        <input type="search" id="me-search" placeholder="Search product or window" aria-label="Search tests">
+        <label class="me-muted"><input type="checkbox" id="me-hide" checked> Hide tests with under a year of month-ends</label>
+      </div>
+      <div class="me-scroll">
+        <table class="me-table" data-source="stats" data-row-key="id" id="me-rank">
+          <thead><tr>
+            <th data-field="root"><button type="button" data-sort="root">Product</button></th>
+            <th data-field="reference" class="l"><button type="button" data-sort="reference">Reference</button></th>
+            <th data-field="when" class="l">Window</th>
+            <th data-field="verdict" class="l"><button type="button" data-sort="verdict_rank">Verdict</button></th>
+            <th data-field="n"><button type="button" data-sort="n">Month-ends</button></th>
+            <th data-field="mean"><button type="button" data-sort="mean">Avg bp</button></th>
+            <th data-field="hit"><button type="button" data-sort="hit">% up</button></th>
+            <th data-field="t"><button type="button" data-sort="t">t</button></th>
+            <th data-field="p"><button type="button" data-sort="p">p</button></th>
+            <th data-field="q"><button type="button" data-sort="q">q</button></th>
+            <th data-field="base_mean">Normal days bp</th>
+            <th data-field="welch_p"><button type="button" data-sort="welch_p">vs normal p</button></th>
+            <th data-field="h1_mean">Earlier half bp</th>
+            <th data-field="h2_mean">Later half bp</th>
+            <th data-field="last12_mean"><button type="button" data-sort="last12_mean">Last 12 bp</button></th>
+            <th data-field="mean_ticks">Avg ticks</th>
+            <th data-field="vol_ratio"><button type="button" data-sort="vol_ratio">Volume vs normal</button></th>
+          </tr></thead>
+          <tbody data-draw="rank"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="me-section" id="trend">
+    <h2>Does the month's trend set the direction?</h2>
+    <div class="me-card">
+      <p class="me-muted">Month-end rebalancing trades against the month's winners, so a real flow should line up with how the month went. Here each move is signed by the S&amp;P 500's move since the previous month-end, and separately by the product's own. Positive means the window went the same way as the month, negative means against it. S&amp;P data starts in early 2025, so these samples are small. Best first.</p>
+      <div class="me-scroll">
+        <table class="me-table" data-source="stats" data-row-key="id">
+          <thead><tr>
+            <th data-field="root">Product</th>
+            <th data-field="reference" class="l">Reference</th>
+            <th data-field="when" class="l">Window</th>
+            <th data-field="es_n">Months</th>
+            <th data-field="es_mean">With S&amp;P's month bp</th>
+            <th data-field="es_hit">Same way as S&amp;P</th>
+            <th data-field="es_p">p</th>
+            <th data-field="own_mean">With own month bp</th>
+            <th data-field="own_hit">Same way as own</th>
+            <th data-field="own_p">p</th>
+          </tr></thead>
+          <tbody data-draw="trend"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="me-section" id="coverage">
+    <h2>What was measured</h2>
+    <div class="me-card">
+      <p class="me-muted">Each product's recorded history in Sierra Chart and the month-ends that had trading in each window. Products with no files on disk could not be tested.</p>
+      <div class="me-scroll">
+        <table class="me-table" data-source="coverage" data-row-key="root">
+          <thead><tr>
+            <th data-field="root">Product</th>
+            <th data-field="name" class="l">Name</th>
+            <th data-field="kind" class="l">Type</th>
+            <th data-field="first">From</th>
+            <th data-field="last">To</th>
+            <th data-field="months_fix">Month-ends, fix</th>
+            <th data-field="months_uk">UK close</th>
+            <th data-field="months_us">US close</th>
+            <th data-field="contracts" class="l">Recordings used</th>
+            <th data-field="status" class="l">Status</th>
+          </tr></thead>
+          <tbody data-draw="cov"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="me-section" id="method">
+    <h2>How it was measured</h2>
+    <div class="me-card me-method">
+      <h3>Windows</h3>
+      <p>Three reference times, each with the 30 minutes before and the 30 minutes after: the London 4pm fix (16:00 London), the UK close (16:30 London) and the US close (16:00 New York). The UK close's before-window is the same half hour as the fix's after-window, so those two columns tell one story.</p>
+      <h3>Month-ends</h3>
+      <p>The last business day of each month on the US calendar for the US close and the UK calendar for the other two. Good Friday, Memorial Day and the August bank holiday move the date back a day. The day after Thanksgiving uses the 13:00 New York close, and the last business day of December uses the 12:30 London close.</p>
+      <h3>Prices</h3>
+      <ul>
+        <li>The last trade at or before each minute, read straight from the Sierra Chart tick files. A window with no trades, or with far fewer trades than the product normally has at that hour, is left out as stale.</li>
+        <li>Futures use the busiest recorded contract in each window. Micro contracts (MES, MNQ, M2K, MGC and others) fill gaps where the full-size contract was not recorded, as MarketWatch does.</li>
+        <li>The currency basket is the equal-weight average of 6E, 6B, 6A, 6J, 6S and 6C on days when at least two were recorded.</li>
+      </ul>
+      <h3>Verdicts</h3>
+      <ul>
+        <li><b>Strong</b>: still significant after correcting for every test run (q under 0.10), different from normal days (p under 0.05), and the same direction in both halves of the sample. Nothing qualifies.</li>
+        <li><b>Promising</b>: significant on its own (p under 0.05), different from normal days, and the same direction in both halves.</li>
+        <li><b>Weak</b>: p under 0.10 on the average or on the up/down count.</li>
+        <li><b>Too few months</b>: fewer than 12 month-ends recorded.</li>
+      </ul>
+      <h3>Trade plans</h3>
+      <ul>
+        <li>Each Promising test is replayed from the minute-by-minute prices: every entry and exit on a grid across the hour around the reference time, in the test's direction, with a range of stops from the entry or none.</li>
+        <li>A stop is hit when a minute's low (for a long) or high (for a short) reaches it, and it fills exactly at the stop. A fast market around the fix may fill worse.</li>
+        <li>The plan in the table takes the entry and exit with the best average result with no stop, then the stop that made the most per tick risked, averaged with its neighbouring stops so one lucky level can't win. If no stop makes money, it keeps no stop.</li>
+        <li>Out of sample: each month-end is scored with the plan chosen from all the other month-ends, so the plan never sees the month it is scored on.</li>
+        <li>Second check: the month-end average beats 95% of random sets of normal days of the same size, its bootstrap 95% range leaves out zero, the median month-end moves the same way, it holds without its largest month, and at least half of the years agree. Confirmed means all five pass.</li>
+        <li>The currency basket is not one contract, so its plans are in bp with each member's costs averaged.</li>
+      </ul>
+      <h3>Limits</h3>
+      <ul>
+        <li>Most products have only one year of recordings, which is too few month-ends to separate a habit from luck. 6B goes back to 2012, 6E to late 2022, ZF and ZN to 2023–24.</li>
+        <li>About 1 in 20 tests will look significant by chance, which is why the corrected q matters more than any single p.</li>
+        <li>The tests are before costs: Avg ticks and Avg per contract show the gross move. The trade plans are after costs.</li>
+        <li>This is a historical study of recorded prices, not a recommendation to trade.</li>
+      </ul>
+    </div>
+  </section>
+</div>
+
+<script>
+const S = window.meState = window.meState || {root: '6B', session: 'FIX', sort: null, dir: 1};
+const ORDER = ['FXB', '6E', '6B', '6J', '6S', '6A', '6C', '6M', '6L', 'ZT', 'ZF', 'ZN', 'ZB', 'UB', 'SR3', 'ZQ', 'FGBS', 'FGBM', 'FGBL',
+  'FGBX', 'FOAT', 'FBTP', 'ES', 'NQ', 'YM', 'RTY', 'FESX', 'FDAX', 'FESB', 'NIY', 'UK100', 'FRA40', 'GER30', 'HKG33', 'CL', 'HO', 'RB',
+  'NG', 'UKOIL', 'USOIL', 'GC', 'XAUUSD', 'SI', 'PL', 'HG', 'ZC', 'ZW', 'ZS', 'ZL', 'LE', 'HE', 'BTC'];
+const SECTORS = ['Currencies', 'Fixed income', 'Equity indices', 'Energy', 'Metals', 'Agriculture', 'Digital assets'];
+const COLS = [['FIX', 'pre'], ['FIX', 'post'], ['UK', 'pre'], ['UK', 'post'], ['US', 'pre'], ['US', 'post']];
+const GROUP = {FIX: '4pm fix', UK: 'UK close', US: 'US close'};
+const WIN = {pre: 'before', post: 'after'};
+const VCLASS = {'Strong': 'strong', 'Promising': 'promising', 'Weak': 'weak', 'No edge': 'none', 'Too few months': 'few'};
+const rank = (r) => { const i = ORDER.indexOf(r); return i < 0 ? 999 : i; };
+
+const f1 = d3.format('.1f'), f2 = d3.format('.2f');
+const bp = (v) => v == null ? '—' : (v > 0 ? '+' : v < 0 ? '−' : '') + (Math.abs(v) < 1 ? f2 : f1)(Math.abs(v));
+const FMT = {
+  bp, int: (v) => v == null ? '—' : d3.format(',')(v), pct: (v) => v == null ? '—' : d3.format('.0%')(v),
+  p: (v) => v == null ? '—' : v < 0.001 ? '<0.001' : d3.format('.3f')(v), t: (v) => v == null ? '—' : f2(v),
+  x: (v) => v == null ? '—' : f1(v) + '×', year: (v) => v == null ? '—' : String(v).slice(0, 4),
+  ticks: (v) => v == null ? '—' : (v > 0 ? '+' : v < 0 ? '−' : '') + f1(Math.abs(v)), text: (v) => v == null ? '—' : String(v),
+  n1: (v) => v == null ? '—' : f1(v), usd: (v) => v == null ? '—' : '$' + f2(v), stop: (v) => v == null || v === 0 ? 'None' : String(v),
+};
+const money = (v, cur) => {
+  if (v == null) return '—';
+  try { return new Intl.NumberFormat('en', {style: 'currency', currency: cur || 'USD', maximumFractionDigits: 0, signDisplay: 'exceptZero'}).format(v); }
+  catch (e) { return FMT.ticks(v); }
+};
+const tone = (v) => v == null ? '' : v > 0 ? 'pos' : v < 0 ? 'neg' : '';
+const where = (w) => Object.fromEntries((w || '').split('&').filter(Boolean).map((kv) => kv.split('=').map(decodeURIComponent)));
+
+// Shows the loading bar, a failure line or nothing, for a drawing whose source isn't ready.
+function notReady(el, d) {
+  el.replaceChildren();
+  if (d.status === 'error') {
+    el.classList.remove('dash-skeleton');
+    const m = document.createElement('div'); m.className = 'me-fail'; m.textContent = 'Failed to load'; el.append(m);
+  } else el.classList.add('dash-skeleton');
+}
+function emptyNote(el, text) {
+  const m = document.createElement('div'); m.className = 'me-empty'; m.textContent = text; el.append(m);
+}
+function measure(svg, text, cls) {
+  const t = svg.append('text').attr('class', cls || null).text(text);
+  const w = t.node().getComputedTextLength(); t.remove(); return w;
+}
+function tipAt(el, tip, px, py) {
+  const w = tip.offsetWidth, h = tip.offsetHeight, W = el.clientWidth;
+  let x = px + 14; if (x + w > W) x = Math.max(0, px - w - 14);
+  tip.style.left = x + 'px'; tip.style.top = Math.max(0, py - h - 10) + 'px';
+}
+function tipLines(tip, head, lines) {
+  tip.replaceChildren();
+  const h = document.createElement('div'); h.className = 'k'; h.textContent = head; tip.append(h);
+  for (const [label, value, color] of lines) {
+    const row = document.createElement('div');
+    if (color) { const s = document.createElement('span'); s.className = 'sw'; s.style.background = color; row.append(s); }
+    row.append(document.createTextNode(label + ' ' + value)); tip.append(row);
+  }
+}
+const choose = (root, session) => {
+  S.root = root; S.session = session; syncButtons();
+  ['pick', 'sel', 'path', 'bars', 'heat'].forEach((n) => dash.draw(n));
+};
+
+dash.calc('verdicts', {
+  inputs: ['stats'], title: 'Tests per verdict',
+  description: 'How many product × window tests fall in each verdict, plus the total.',
+  fn: (stats) => ['Strong', 'Promising', 'Weak', 'No edge', 'Too few months'].map((v) => ({verdict: v, tests: stats.filter((r) => r.verdict === v).length}))
+    .concat([{verdict: 'All', tests: stats.length}]),
+});
+
+// Any single value: data-source, data-field, data-where, data-fmt.
+dash.draw('val', (el) => {
+  const d = dash.data(el.dataset.source);
+  if (d.status !== 'ok') { el.textContent = '—'; return; }
+  const w = where(el.dataset.where);
+  const row = d.data.find((r) => Object.entries(w).every(([k, v]) => String(r[k]) === v));
+  const v = row ? row[el.dataset.field] : null;
+  el.textContent = (FMT[el.dataset.fmt] || FMT.text)(v == null ? null : v);
+});
+
+// ---------------------------------------------------------------- next month-end clock
+const zoned = (y, mo, d, hh, mm, tz) => {
+  const want = Date.UTC(y, mo, d, hh, mm); let t = want;
+  for (let i = 0; i < 3; i++) {
+    const p = Object.fromEntries(new Intl.DateTimeFormat('en-GB', {timeZone: tz, hourCycle: 'h23', year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric'})
+      .formatToParts(new Date(t)).map((x) => [x.type, x.value]));
+    t += want - Date.UTC(+p.year, +p.month - 1, +p.day, +p.hour, +p.minute);
+  }
+  return t;
+};
+const lastWeekday = (y, mo) => { const d = new Date(Date.UTC(y, mo + 1, 0)); while (d.getUTCDay() === 0 || d.getUTCDay() === 6) d.setUTCDate(d.getUTCDate() - 1); return d; };
+function nextMonthEnd() {
+  const now = Date.now(); const today = new Date();
+  let y = today.getUTCFullYear(), mo = today.getUTCMonth();
+  for (let i = 0; i < 3; i++) {
+    const d = lastWeekday(y, mo);
+    if (zoned(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate(), 16, 30, 'America/New_York') > now) return d;
+    mo += 1; if (mo > 11) { mo = 0; y += 1; }
+  }
+  return lastWeekday(y, mo);
+}
+const REF = {FIX: [16, 0, 'Europe/London'], UK: [16, 30, 'Europe/London'], US: [16, 0, 'America/New_York']};
+const hm = (t) => new Intl.DateTimeFormat('en-GB', {timeZone: 'Europe/London', hour: '2-digit', minute: '2-digit'}).format(new Date(t));
+const zone = (t) => (new Intl.DateTimeFormat('en-GB', {timeZone: 'Europe/London', timeZoneName: 'short'}).formatToParts(new Date(t)).find((p) => p.type === 'timeZoneName') || {}).value || '';
+dash.draw('nextday', (el) => {
+  const d = nextMonthEnd();
+  el.textContent = new Intl.DateTimeFormat('en-GB', {timeZone: 'UTC', weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'}).format(d);
+});
+dash.draw('win', (el) => {
+  const d = nextMonthEnd(); const [hh, mm, tz] = REF[el.dataset.ref] || REF.FIX;
+  const t = zoned(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate(), hh, mm, tz);
+  el.textContent = `${hm(t - 1800000)}–${hm(t + 1800000)} ${zone(t)}`;
+});
+
+// ---------------------------------------------------------------- heatmap
+dash.draw('heat', (el) => {
+  const d = dash.data('stats');
+  if (d.status !== 'ok') { notReady(el, d); return; }
+  el.classList.remove('dash-skeleton'); el.replaceChildren();
+  const rows = d.data;
+  const byId = new Map(rows.map((r) => [r.id, r]));
+  const products = Array.from(d3.group(rows, (r) => r.root), ([root, rs]) => ({root, name: rs[0].name, sector: rs[0].sector}))
+    .sort((a, b) => (SECTORS.indexOf(a.sector) - SECTORS.indexOf(b.sector)) || (rank(a.root) - rank(b.root)));
+  const W = Math.max(320, el.clientWidth || 640);
+  const svg = d3.select(el).append('svg').attr('width', '100%').attr('role', 'img').attr('aria-label', 'Average month-end move by product and window');
+  const wide = W >= 720;
+  const short = (p) => p.root === 'FXB' ? 'Basket' : p.root;
+  const labelOf = (p) => wide ? `${short(p)}  ${p.name.replace(/\s*\(.*\)$/, '')}` : short(p);
+  const labelW = Math.min(W * (wide ? 0.34 : 0.24), d3.max(products, (p) => measure(svg, labelOf(p), 'strong')) + 14);
+  const cellW = (W - labelW) / COLS.length, rowH = 26, headH = 46, secH = 26;
+  let y = headH; const layout = [];
+  let lastSector = null;
+  for (const p of products) {
+    if (p.sector !== lastSector) { layout.push({sector: p.sector, y}); y += secH; lastSector = p.sector; }
+    layout.push({p, y}); y += rowH;
+  }
+  const H = y + 4;
+  svg.attr('viewBox', `0 0 ${W} ${H}`);
+  const head = svg.append('g');
+  for (let g = 0; g < 3; g++) {
+    const x = labelW + g * 2 * cellW;
+    head.append('text').attr('class', 'strong').attr('x', x + cellW).attr('y', 16).attr('text-anchor', 'middle').text(GROUP[COLS[g * 2][0]]);
+    head.append('line').attr('x1', x + 6).attr('x2', x + 2 * cellW - 6).attr('y1', 22).attr('y2', 22).style('stroke', 'var(--cds-chart-axis)');
+    for (let k = 0; k < 2; k++) head.append('text').attr('x', x + (k + 0.5) * cellW).attr('y', 38).attr('text-anchor', 'middle').text(WIN[COLS[g * 2 + k][1]]);
+  }
+  const ok = 'var(--color-ok)', bad = 'var(--color-bad)';
+  const tip = document.createElement('div'); tip.className = 'me-tip'; tip.hidden = true; el.append(tip);
+  const fs = cellW < 46 ? 10.5 : 12;
+  for (const item of layout) {
+    if (item.sector) {
+      svg.append('text').attr('x', 0).attr('y', item.y + 18).attr('class', 'faint').text(item.sector);
+      continue;
+    }
+    const p = item.p;
+    svg.append('text').attr('class', 'strong').attr('x', 0).attr('y', item.y + rowH / 2 + 4).text(labelOf(p))
+      .each(function () { // trim a long name to fit its column
+        let s = this.textContent; while (this.getComputedTextLength() > labelW - 10 && s.length > 4) { s = s.slice(0, -2); this.textContent = s + '…'; }
+      });
+    COLS.forEach(([session, window], i) => {
+      const r = byId.get(`${p.root}|${session}|${window}`);
+      const x = labelW + i * cellW;
+      const g = svg.append('g').attr('class', 'cell').attr('transform', `translate(${x + 1},${item.y + 1})`);
+      const few = !r || r.verdict === 'Too few months';
+      const strength = r && r.t != null ? Math.min(Math.abs(r.t) / 3.2, 1) : 0;
+      const selected = p.root === S.root && session === S.session;
+      g.append('rect').attr('width', cellW - 2).attr('height', rowH - 2).attr('rx', 3)
+        .style('fill', r ? (r.mean >= 0 ? ok : bad) : 'var(--cds-chart-grid)')
+        .style('fill-opacity', r ? (few ? 0.06 : 0.08 + 0.5 * strength) : 0.5)
+        .style('stroke', selected ? 'var(--color-fg)' : (r && (r.verdict === 'Promising' || r.verdict === 'Strong')) ? 'var(--color-warn)' : 'none')
+        .style('stroke-width', selected ? 2 : 1.5);
+      if (r) g.append('text').attr('class', few ? 'faint' : 'cellv').attr('x', (cellW - 2) / 2).attr('y', rowH / 2 + 3).attr('text-anchor', 'middle')
+        .style('font-size', fs + 'px').text(bp(r.mean));
+      if (!r) return;
+      g.attr('tabindex', 0).attr('role', 'button').attr('aria-label', `${p.root} ${GROUP[session]} ${WIN[window]}: ${bp(r.mean)} bp`)
+        .on('click', () => { choose(p.root, session); document.getElementById('detail')?.scrollIntoView({behavior: 'smooth', block: 'start'}); })
+        .on('keydown', (ev) => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); choose(p.root, session); } })
+        .on('pointerenter pointermove', (ev) => {
+          tipLines(tip, `${p.name} · ${GROUP[session]}, 30 min ${WIN[window]}`, [
+            ['Month-end avg', `${bp(r.mean)} bp`], ['Up in', `${FMT.pct(r.hit)} of ${r.n}`], ['p', FMT.p(r.p)],
+            ['Normal days avg', `${bp(r.base_mean)} bp`], ['Verdict', r.verdict]]);
+          tip.hidden = false; const [mx, my] = d3.pointer(ev, el); tipAt(el, tip, mx, my);
+        })
+        .on('pointerleave', () => { tip.hidden = true; });
+    });
+  }
+});
+
+// ---------------------------------------------------------------- detail controls
+function syncButtons() {
+  document.querySelectorAll('#detail [data-session]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.session === S.session)));
+}
+document.querySelectorAll('#detail [data-session]').forEach((b) => b.addEventListener('click', () => choose(S.root, b.dataset.session)));
+syncButtons();
+
+dash.draw('pick', (sel) => {
+  const d = dash.data('coverage');
+  if (d.status !== 'ok') { sel.replaceChildren(); return; }
+  const ok = d.data.filter((r) => r.status === 'ok').sort((a, b) => (SECTORS.indexOf(a.sector) - SECTORS.indexOf(b.sector)) || (rank(a.root) - rank(b.root)));
+  sel.replaceChildren(...ok.map((r) => new Option(`${r.root === 'FXB' ? 'Basket' : r.root} · ${r.name}`, r.root)));
+  sel.value = S.root;
+  sel.onchange = () => choose(sel.value, S.session);
+});
+
+function fillRows(tbody, rows, cols, onPick, key) {
+  tbody.replaceChildren();
+  for (const r of rows) {
+    const tr = document.createElement('tr'); tr.dataset.key = r[key || 'id'];
+    if (onPick) { tr.className = 'pick'; tr.addEventListener('click', () => onPick(r)); }
+    for (const c of cols) {
+      const td = document.createElement('td'); const v = r[c.k];
+      if (c.l) td.className = 'l';
+      if (c.verdict || c.pill) { const s = document.createElement('span'); s.className = 'me-v ' + ((c.pill || VCLASS)[v] || 'none'); s.textContent = v; td.append(s); }
+      else {
+        td.textContent = c.money ? money(v, r.currency) : (FMT[c.f] || FMT.text)(v == null ? null : v);
+        if (c.tone) { const t = tone(v); if (t) td.classList.add(t); }
+      }
+      tr.append(td);
+    }
+    tbody.append(tr);
+  }
+}
+
+dash.draw('sel', (tbody) => {
+  const d = dash.data('stats');
+  if (d.status !== 'ok') { tbody.replaceChildren(); return; }
+  const rows = d.data.filter((r) => r.root === S.root && r.session === S.session).sort((a, b) => a.window === 'pre' ? -1 : 1);
+  fillRows(tbody, rows, [
+    {k: 'when'}, {k: 'verdict', verdict: true, l: true}, {k: 'n', f: 'int'}, {k: 'mean', f: 'bp', tone: true}, {k: 'hit', f: 'pct'},
+    {k: 'p', f: 'p'}, {k: 'base_mean', f: 'bp'}, {k: 'welch_p', f: 'p'}, {k: 'last12_mean', f: 'bp', tone: true}, {k: 'last12_hit', f: 'pct'},
+    {k: 'mean_ticks', f: 'ticks'}, {k: 'mean_value', money: true}, {k: 'vol_ratio', f: 'x'}]);
+});
+
+// ---------------------------------------------------------------- average path
+dash.draw('path', (el) => {
+  const d = dash.data('paths');
+  if (d.status !== 'ok') { notReady(el, d); return; }
+  el.classList.remove('dash-skeleton'); el.replaceChildren();
+  const rows = d.data.filter((r) => r.series === `${S.root}|${S.session}`);
+  if (!rows.length) { emptyNote(el, 'No complete hours recorded for this choice.'); return; }
+  const series = ['Month-end', 'Normal days'].map((kind, i) => {
+    const rs = rows.filter((r) => r.kind === kind).sort((a, b) => a.minute - b.minute);
+    return {kind, days: rs.length ? rs[0].days : 0, color: i === 0 ? dash.colors[0] : 'var(--cds-chart-muted)', pts: rs.map((r) => ({x: +r.minute, y: +r.bps}))};
+  }).filter((s) => s.pts.length);
+  const W = Math.max(300, el.clientWidth || 600), H = 290;
+  const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`).attr('role', 'img').attr('aria-label', 'Average path, month-end against normal days');
+  const ys = series.flatMap((s) => s.pts.map((p) => p.y)).concat([0]);
+  const y = d3.scaleLinear(d3.extent(ys), [H - 30, 34]).nice();
+  const ticks = y.ticks(5);
+  const left = d3.max(ticks, (t) => measure(svg, bp(t))) + 10;
+  const x = d3.scaleLinear([-30, 30], [left, W - 10]);
+  svg.append('g').selectAll('line').data(ticks).join('line').attr('x1', left).attr('x2', W - 10).attr('y1', (t) => y(t)).attr('y2', (t) => y(t))
+    .style('stroke', (t) => t === 0 ? 'var(--cds-chart-axis)' : 'var(--cds-chart-grid)');
+  svg.append('g').selectAll('text').data(ticks).join('text').attr('x', left - 8).attr('y', (t) => y(t) + 4).attr('text-anchor', 'end').text((t) => bp(t));
+  svg.append('g').selectAll('text').data([-30, -20, -10, 0, 10, 20, 30]).join('text').attr('x', (v) => x(v)).attr('y', H - 10).attr('text-anchor', 'middle')
+    .text((v) => v === 0 ? GROUP[S.session] : (v > 0 ? '+' : '−') + Math.abs(v) + 'm');
+  svg.append('line').attr('x1', x(0)).attr('x2', x(0)).attr('y1', 30).attr('y2', H - 30).style('stroke', 'var(--cds-chart-reference)').attr('stroke-dasharray', '4 3');
+  const line = d3.line().x((p) => x(p.x)).y((p) => y(p.y));
+  for (const s of series.slice().reverse()) {
+    svg.append('path').attr('d', line(s.pts)).style('fill', 'none').style('stroke', s.color).attr('stroke-width', 2).attr('stroke-linecap', 'round').attr('stroke-linejoin', 'round');
+  }
+  let lx = left;
+  for (const s of series) { // legend
+    svg.append('line').attr('x1', lx).attr('x2', lx + 16).attr('y1', 12).attr('y2', 12).style('stroke', s.color).attr('stroke-width', 2.5);
+    const label = `${s.kind} (${d3.format(',')(s.days)} days)`;
+    svg.append('text').attr('x', lx + 22).attr('y', 16).text(label);
+    lx += 22 + measure(svg, label) + 18;
+  }
+  const tip = document.createElement('div'); tip.className = 'me-tip'; tip.hidden = true; el.append(tip);
+  const rule = svg.append('line').attr('y1', 30).attr('y2', H - 30).style('stroke', 'var(--cds-chart-axis)').style('opacity', 0);
+  const dots = series.map((s) => svg.append('circle').attr('r', 3.5).style('fill', s.color).style('opacity', 0));
+  svg.append('rect').attr('x', left).attr('y', 30).attr('width', W - 10 - left).attr('height', H - 60).style('fill', 'transparent')
+    .on('pointermove', (ev) => {
+      const [mx] = d3.pointer(ev); const m = Math.max(-30, Math.min(30, Math.round(x.invert(mx))));
+      rule.attr('x1', x(m)).attr('x2', x(m)).style('opacity', 1);
+      const lines = [];
+      series.forEach((s, i) => { const p = s.pts.find((q) => q.x === m); if (p) { dots[i].attr('cx', x(m)).attr('cy', y(p.y)).style('opacity', 1); lines.push([s.kind, `${bp(p.y)} bp`, s.color]); } });
+      tipLines(tip, m === 0 ? GROUP[S.session] : `${m > 0 ? '+' : '−'}${Math.abs(m)} min`, lines);
+      tip.hidden = false; const [px, py] = d3.pointer(ev, el); tipAt(el, tip, px, py);
+    })
+    .on('pointerleave', () => { tip.hidden = true; rule.style('opacity', 0); dots.forEach((c) => c.style('opacity', 0)); });
+});
+
+// ---------------------------------------------------------------- every month-end
+dash.draw('bars', (el) => {
+  const d = dash.data('events');
+  if (d.status !== 'ok') { notReady(el, d); return; }
+  el.classList.remove('dash-skeleton'); el.replaceChildren();
+  const rows = d.data.filter((r) => r.root === S.root && r.session === S.session).sort((a, b) => a.date < b.date ? -1 : 1);
+  if (!rows.length) { emptyNote(el, 'No month-ends recorded for this choice.'); return; }
+  const W = Math.max(300, el.clientWidth || 600), H = 290;
+  const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`).attr('role', 'img').attr('aria-label', 'Move at each month-end');
+  const vals = rows.flatMap((r) => [r.pre, r.post]).filter((v) => v != null).concat([0]);
+  const y = d3.scaleLinear(d3.extent(vals), [H - 30, 34]).nice();
+  const ticks = y.ticks(5);
+  const left = d3.max(ticks, (t) => measure(svg, bp(t))) + 10;
+  const x0 = d3.scaleBand(rows.map((r) => r.date), [left, W - 6]).paddingInner(rows.length > 60 ? 0.1 : 0.25);
+  const x1 = d3.scaleBand(['pre', 'post'], [0, x0.bandwidth()]).padding(0.04);
+  const colors = {pre: dash.colors[0], post: dash.colors[1]};
+  svg.append('g').selectAll('line').data(ticks).join('line').attr('x1', left).attr('x2', W - 6).attr('y1', (t) => y(t)).attr('y2', (t) => y(t))
+    .style('stroke', (t) => t === 0 ? 'var(--cds-chart-axis)' : 'var(--cds-chart-grid)');
+  svg.append('g').selectAll('text').data(ticks).join('text').attr('x', left - 8).attr('y', (t) => y(t) + 4).attr('text-anchor', 'end').text((t) => bp(t));
+  const bw = Math.max(1, x1.bandwidth());
+  for (const w of ['pre', 'post']) {
+    svg.append('g').selectAll('rect').data(rows.filter((r) => r[w] != null)).join('rect')
+      .attr('x', (r) => x0(r.date) + x1(w)).attr('width', bw).attr('rx', Math.min(2, bw / 2))
+      .attr('y', (r) => Math.min(y(r[w]), y(0))).attr('height', (r) => Math.max(1, Math.abs(y(r[w]) - y(0)))).style('fill', colors[w]);
+  }
+  // Year labels when there are many months, month labels otherwise.
+  const parse = (s) => new Date(s + 'T00:00:00Z');
+  const many = rows.length > 24;
+  const labels = many ? rows.filter((r, i) => i === 0 || r.date.slice(0, 4) !== rows[i - 1].date.slice(0, 4)) : rows.filter((r, i) => i % Math.ceil(rows.length / 8) === 0);
+  const fmtL = many ? d3.utcFormat('%Y') : d3.utcFormat('%b %y');
+  let lastX = -Infinity;
+  for (const r of labels) {
+    const lx = x0(r.date) + x0.bandwidth() / 2; const text = fmtL(parse(r.date));
+    const w = measure(svg, text); if (lx - w / 2 < lastX + 6) continue;
+    svg.append('text').attr('x', lx).attr('y', H - 10).attr('text-anchor', 'middle').text(text); lastX = lx + w / 2;
+  }
+  let lx = left;
+  for (const w of ['pre', 'post']) {
+    svg.append('rect').attr('x', lx).attr('y', 6).attr('width', 12).attr('height', 12).attr('rx', 2).style('fill', colors[w]);
+    const label = `30 min ${WIN[w]}`; svg.append('text').attr('x', lx + 18).attr('y', 16).text(label);
+    lx += 18 + measure(svg, label) + 18;
+  }
+  const tip = document.createElement('div'); tip.className = 'me-tip'; tip.hidden = true; el.append(tip);
+  const hl = svg.append('rect').attr('y', 30).attr('height', H - 60).style('fill', 'var(--cds-chart-grid)').style('opacity', 0);
+  hl.lower();
+  svg.append('g').selectAll('rect').data(rows).join('rect').attr('x', (r) => x0(r.date)).attr('width', x0.step()).attr('y', 30).attr('height', H - 60).style('fill', 'transparent')
+    .on('pointerenter pointermove', (ev, r) => {
+      hl.attr('x', x0(r.date)).attr('width', x0.bandwidth()).style('opacity', 1);
+      tipLines(tip, `${d3.utcFormat('%a %-d %b %Y')(parse(r.date))} · ${r.contract}`, [
+        ['Before', `${bp(r.pre)} bp`, colors.pre], ['After', `${bp(r.post)} bp`, colors.post], ['Month so far', `${bp(r.mtd)} bp`]]);
+      tip.hidden = false; const [px, py] = d3.pointer(ev, el); tipAt(el, tip, px, py);
+    })
+    .on('pointerleave', () => { tip.hidden = true; hl.style('opacity', 0); });
+});
+
+// ---------------------------------------------------------------- ranking table
+const search = document.getElementById('me-search');
+const hide = document.getElementById('me-hide');
+if (search) search.addEventListener('input', () => dash.draw('rank'));
+if (hide) hide.addEventListener('change', () => dash.draw('rank'));
+document.querySelectorAll('#me-rank [data-sort]').forEach((b) => b.addEventListener('click', () => {
+  const k = b.dataset.sort;
+  if (S.sort === k) S.dir = -S.dir;
+  else { S.sort = k; S.dir = ['p', 'q', 'welch_p', 'verdict_rank', 'root', 'reference'].includes(k) ? 1 : -1; }
+  document.querySelectorAll('#me-rank th').forEach((th) => th.removeAttribute('aria-sort'));
+  const th = b.closest('th'); if (th) th.setAttribute('aria-sort', S.dir > 0 ? 'ascending' : 'descending');
+  dash.draw('rank');
+}));
+const pickRow = (r) => { choose(r.root, r.session); document.getElementById('detail')?.scrollIntoView({behavior: 'smooth', block: 'start'}); };
+
+dash.draw('rank', (tbody) => {
+  const d = dash.data('stats');
+  if (d.status !== 'ok') { tbody.replaceChildren(); return; }
+  const q = (search && search.value || '').trim().toLowerCase();
+  let rows = d.data.filter((r) => !(hide && hide.checked && r.verdict === 'Too few months'))
+    .filter((r) => !q || [r.root, r.name, r.reference, r.when, r.verdict, r.sector].join(' ').toLowerCase().includes(q));
+  if (S.sort) {
+    const k = S.sort;
+    rows = rows.slice().sort((a, b) => {
+      const va = a[k], vb = b[k];
+      if (va == null && vb == null) return 0; if (va == null) return 1; if (vb == null) return -1;
+      return (typeof va === 'number' ? va - vb : String(va).localeCompare(String(vb))) * S.dir;
+    });
+  }
+  fillRows(tbody, rows, [
+    {k: 'root'}, {k: 'reference', l: true}, {k: 'when', l: true}, {k: 'verdict', verdict: true, l: true}, {k: 'n', f: 'int'},
+    {k: 'mean', f: 'bp', tone: true}, {k: 'hit', f: 'pct'}, {k: 't', f: 't'}, {k: 'p', f: 'p'}, {k: 'q', f: 'p'}, {k: 'base_mean', f: 'bp'},
+    {k: 'welch_p', f: 'p'}, {k: 'h1_mean', f: 'bp', tone: true}, {k: 'h2_mean', f: 'bp', tone: true}, {k: 'last12_mean', f: 'bp', tone: true},
+    {k: 'mean_ticks', f: 'ticks'}, {k: 'vol_ratio', f: 'x'}], pickRow);
+});
+
+dash.draw('trend', (tbody) => {
+  const d = dash.data('stats');
+  if (d.status !== 'ok') { tbody.replaceChildren(); return; }
+  const rows = d.data.filter((r) => (r.es_n || 0) >= 12 && r.es_p != null).sort((a, b) => a.es_p - b.es_p).slice(0, 15);
+  fillRows(tbody, rows, [
+    {k: 'root'}, {k: 'reference', l: true}, {k: 'when', l: true}, {k: 'es_n', f: 'int'}, {k: 'es_mean', f: 'bp', tone: true},
+    {k: 'es_hit', f: 'pct'}, {k: 'es_p', f: 'p'}, {k: 'own_mean', f: 'bp', tone: true}, {k: 'own_hit', f: 'pct'}, {k: 'own_p', f: 'p'}], pickRow);
+});
+
+dash.draw('cov', (tbody) => {
+  const d = dash.data('coverage');
+  if (d.status !== 'ok') { tbody.replaceChildren(); return; }
+  const rows = d.data.slice().sort((a, b) => (SECTORS.indexOf(a.sector) - SECTORS.indexOf(b.sector)) || (rank(a.root) - rank(b.root)));
+  fillRows(tbody, rows, [
+    {k: 'root'}, {k: 'name', l: true}, {k: 'kind', l: true}, {k: 'first'}, {k: 'last'}, {k: 'months_fix', f: 'int'},
+    {k: 'months_uk', f: 'int'}, {k: 'months_us', f: 'int'}, {k: 'contracts', l: true}, {k: 'status', l: true}],
+    (r) => { if (r.status === 'ok') pickRow({root: r.root, session: S.session}); }, 'root');
+});
+
+// ---------------------------------------------------------------- trade plans
+const T = window.tpState = window.tpState || {test: '6B|FIX|pre', stop: null, entry: null, exit: null};
+const READS = ['Holds up', 'Faded lately', 'Too small after costs', 'Basket, not one contract'];
+const RCLASS = {'Holds up': 'strong'};
+const CITY = {FIX: 'London', UK: 'London', US: 'New York'};
+const clockOf = (session, m) => {
+  const [hh, mm] = REF[session] || REF.FIX; const t = hh * 60 + mm + m;
+  return `${String(Math.floor(t / 60)).padStart(2, '0')}:${String(t % 60).padStart(2, '0')}`;
+};
+const byRead = (a, b) => (READS.indexOf(a.read) - READS.indexOf(b.read)) || (b.simple_net - a.simple_net);
+const planOf = () => {
+  const d = dash.data('plans');
+  if (d.status !== 'ok') return null;
+  const p = d.data.find((r) => r.id === T.test) || d.data.slice().sort(byRead)[0] || null;
+  if (p) T.test = p.id;
+  return p;
+};
+const unitOf = (p) => p.unit === 'bp' ? 'bp' : 'ticks';
+const planStop = (p) => p.stop == null ? 0 : p.stop;
+const curStop = (p) => T.stop != null ? T.stop : planStop(p);
+const curTiming = (p) => [T.entry != null ? T.entry : p.entry_min, T.exit != null ? T.exit : p.exit_min];
+const pickPlan = (id) => {
+  T.test = id; T.stop = null; T.entry = null; T.exit = null;
+  ['tplans', 'tpick', 'tstop', 'theat', 'tstops', 'tmonths'].forEach((n) => dash.draw(n));
+};
+const useStop = (s) => { T.stop = s; ['tstop', 'theat', 'tstops'].forEach((n) => dash.draw(n)); };
+const useTiming = (en, ex) => { T.entry = en; T.exit = ex; ['theat', 'tstops'].forEach((n) => dash.draw(n)); };
+function yAxis(svg, y, left, right) {
+  const ticks = y.ticks(5);
+  svg.append('g').selectAll('line').data(ticks).join('line').attr('x1', left).attr('x2', right).attr('y1', (t) => y(t)).attr('y2', (t) => y(t))
+    .style('stroke', (t) => t === 0 ? 'var(--cds-chart-axis)' : 'var(--cds-chart-grid)');
+  svg.append('g').selectAll('text').data(ticks).join('text').attr('x', left - 8).attr('y', (t) => y(t) + 4).attr('text-anchor', 'end').text((t) => FMT.ticks(t));
+}
+
+dash.draw('tplans', (tbody) => {
+  const d = dash.data('plans');
+  if (d.status !== 'ok') { tbody.replaceChildren(); return; }
+  fillRows(tbody, d.data.slice().sort(byRead), [
+    {k: 'root'}, {k: 'direction', l: true}, {k: 'reference', l: true}, {k: 'when', l: true}, {k: 'read', pill: RCLASS, l: true},
+    {k: 'months', f: 'int'}, {k: 'chk_check', l: true}, {k: 'simple_net', f: 'ticks', tone: true}, {k: 'simple_win', f: 'pct'},
+    {k: 'mae_p80', f: 'n1'}, {k: 'simple_worst', f: 'ticks', tone: true}, {k: 'simple_last12', f: 'ticks', tone: true},
+    {k: 'entry_clock', l: true}, {k: 'exit_clock', l: true}, {k: 'stop', f: 'stop'}, {k: 'plan_net_ticks', f: 'ticks', tone: true},
+    {k: 'plan_net_value', money: true, tone: true}, {k: 'plan_win', f: 'pct'}, {k: 'plan_worst', f: 'ticks', tone: true},
+    {k: 'per_risk', f: 't'}, {k: 'oos_net', f: 'ticks', tone: true}],
+    (r) => { pickPlan(r.id); document.getElementById('tp-detail')?.scrollIntoView({behavior: 'smooth', block: 'start'}); });
+  const p = planOf();
+  tbody.querySelectorAll('tr').forEach((tr) => tr.classList.toggle('sel', !!p && tr.dataset.key === p.id));
+});
+
+dash.draw('tpick', (sel) => {
+  const d = dash.data('plans'), p = planOf();
+  if (d.status !== 'ok' || !p) { sel.replaceChildren(); return; }
+  sel.replaceChildren(...d.data.slice().sort(byRead).map((r) =>
+    new Option(`${r.root === 'FXB' ? 'Basket' : r.root} ${r.direction.toLowerCase()} · ${r.reference}, ${r.when} · ${r.read}`, r.id)));
+  sel.value = p.id;
+  sel.onchange = () => pickPlan(sel.value);
+});
+
+dash.draw('tstop', (sel) => {
+  const d = dash.data('grid'), p = planOf();
+  if (d.status !== 'ok' || !p) { sel.replaceChildren(); return; }
+  const stops = [...new Set(d.data.filter((r) => r.test === p.id).map((r) => r.stop))].sort((a, b) => ((a === 0) - (b === 0)) || a - b);
+  const u = unitOf(p), ps = planStop(p);
+  sel.replaceChildren(...stops.map((s) => new Option(`${s === 0 ? 'No stop' : `Stop ${s} ${u}`}${s === ps ? ' (the plan)' : ''}`, String(s))));
+  sel.value = String(curStop(p));
+  sel.onchange = () => useStop(Number(sel.value));
+});
+
+dash.draw('theat', (el) => {
+  const d = dash.data('grid'), p = planOf();
+  if (d.status !== 'ok') { notReady(el, d); return; }
+  if (!p) { notReady(el, dash.data('plans')); return; }
+  el.classList.remove('dash-skeleton'); el.replaceChildren();
+  const stop = curStop(p), [en, ex] = curTiming(p), u = unitOf(p);
+  const rows = d.data.filter((r) => r.test === p.id && r.stop === stop);
+  if (!rows.length) { emptyNote(el, 'No plans recorded at this stop.'); return; }
+  const entries = [...new Set(rows.map((r) => r.entry_min))].sort((a, b) => a - b);
+  const exits = [...new Set(rows.map((r) => r.exit_min))].sort((a, b) => a - b);
+  const W = Math.max(300, el.clientWidth || 600);
+  const svg = d3.select(el).append('svg').attr('width', '100%').attr('role', 'img').attr('aria-label', 'Net per trade by entry and exit time');
+  const left = d3.max(entries, (m) => measure(svg, clockOf(p.session, m), 'strong')) + 12;
+  const top = 46, ch = 20, cw = (W - left) / exits.length;
+  const H = top + entries.length * ch + 6;
+  svg.attr('viewBox', `0 0 ${W} ${H}`);
+  svg.append('text').attr('x', 0).attr('y', 14).text(`Entry down, exit across · ${CITY[p.session]} time · ${stop ? `stop ${stop} ${u}` : 'no stop'}`);
+  const every = Math.max(1, Math.ceil((measure(svg, '00:00') + 8) / cw));
+  exits.forEach((m, i) => {
+    if (Math.abs(m / (p.step || 5)) % every !== 0) return;
+    svg.append('text').attr('class', m === 0 ? 'strong' : null).attr('x', left + (i + 0.5) * cw).attr('y', top - 8).attr('text-anchor', 'middle').text(clockOf(p.session, m));
+  });
+  entries.forEach((m, i) => svg.append('text').attr('class', m === 0 ? 'strong' : null).attr('x', left - 8).attr('y', top + i * ch + ch / 2 + 4)
+    .attr('text-anchor', 'end').text(clockOf(p.session, m)));
+  const ext = d3.max(rows, (r) => Math.abs(r.net)) || 1;
+  const tip = document.createElement('div'); tip.className = 'me-tip'; tip.hidden = true; el.append(tip);
+  for (const r of rows) {
+    const x = left + exits.indexOf(r.exit_min) * cw, y = top + entries.indexOf(r.entry_min) * ch;
+    const isPlan = r.entry_min === p.entry_min && r.exit_min === p.exit_min, isSel = r.entry_min === en && r.exit_min === ex;
+    const label = `In ${clockOf(p.session, r.entry_min)}, out ${clockOf(p.session, r.exit_min)} ${CITY[p.session]}`;
+    const g = svg.append('g').attr('class', 'hit').attr('transform', `translate(${x + 1},${y + 1})`)
+      .attr('tabindex', 0).attr('role', 'button').attr('aria-label', `${label}: ${FMT.ticks(r.net)} ${u}`);
+    g.append('rect').attr('width', Math.max(1, cw - 2)).attr('height', ch - 2).attr('rx', 3)
+      .style('fill', r.net >= 0 ? 'var(--color-ok)' : 'var(--color-bad)').style('fill-opacity', 0.08 + 0.6 * Math.min(1, Math.abs(r.net) / ext))
+      .style('stroke', isSel ? 'var(--color-fg)' : isPlan ? 'var(--color-warn)' : 'none').style('stroke-width', isSel ? 2 : 1.5);
+    if (cw >= 38) g.append('text').attr('class', 'cellv').attr('x', (cw - 2) / 2).attr('y', ch / 2 + 3).attr('text-anchor', 'middle')
+      .style('font-size', '11px').text(FMT.ticks(r.net));
+    g.on('click', () => useTiming(r.entry_min, r.exit_min))
+      .on('keydown', (ev) => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); useTiming(r.entry_min, r.exit_min); } })
+      .on('pointerenter pointermove', (ev) => {
+        tipLines(tip, label, [['Net per trade', `${FMT.ticks(r.net)} ${u}`], ['Win rate', FMT.pct(r.win)], ['Stop', stop ? `${stop} ${u}` : 'None']]);
+        tip.hidden = false; const [mx, my] = d3.pointer(ev, el); tipAt(el, tip, mx, my);
+      })
+      .on('pointerleave', () => { tip.hidden = true; });
+  }
+});
+
+dash.draw('tstops', (el) => {
+  const d = dash.data('grid'), p = planOf();
+  if (d.status !== 'ok') { notReady(el, d); return; }
+  if (!p) { notReady(el, dash.data('plans')); return; }
+  el.classList.remove('dash-skeleton'); el.replaceChildren();
+  const [en, ex] = curTiming(p), stop = curStop(p), u = unitOf(p);
+  const rows = d.data.filter((r) => r.test === p.id && r.entry_min === en && r.exit_min === ex)
+    .sort((a, b) => ((a.stop === 0) - (b.stop === 0)) || a.stop - b.stop);
+  if (!rows.length) { emptyNote(el, 'No plans recorded for this entry and exit.'); return; }
+  const W = Math.max(300, el.clientWidth || 600), H = 290;
+  const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`).attr('role', 'img').attr('aria-label', 'Net per trade at each stop');
+  const y = d3.scaleLinear(d3.extent(rows.map((r) => r.net).concat([0])), [H - 44, 40]).nice();
+  const left = d3.max(y.ticks(5), (t) => measure(svg, FMT.ticks(t))) + 10;
+  const x = d3.scaleBand(rows.map((r) => String(r.stop)), [left, W - 6]).paddingInner(0.25);
+  yAxis(svg, y, left, W - 6);
+  svg.append('text').attr('class', 'strong').attr('x', 0).attr('y', 14).text(`In ${clockOf(p.session, en)}, out ${clockOf(p.session, ex)} ${CITY[p.session]}`);
+  const bw = Math.min(32, Math.max(1, x.bandwidth())), off = (x.bandwidth() - bw) / 2;
+  const tip = document.createElement('div'); tip.className = 'me-tip'; tip.hidden = true; el.append(tip);
+  let lastX = -Infinity;
+  for (const r of rows) {
+    const bx = x(String(r.stop)) + off, top = Math.min(y(r.net), y(0)), h = Math.max(1, Math.abs(y(r.net) - y(0)));
+    const name = r.stop === 0 ? 'No stop' : `Stop ${r.stop} ${u}`;
+    const g = svg.append('g').attr('class', 'hit').attr('tabindex', 0).attr('role', 'button').attr('aria-label', `${name}: ${FMT.ticks(r.net)} ${u}`);
+    g.append('rect').attr('x', bx).attr('width', bw).attr('y', top).attr('height', h).attr('rx', Math.min(3, bw / 2))
+      .style('fill', r.net >= 0 ? 'var(--color-ok)' : 'var(--color-bad)').style('opacity', r.stop === stop ? 1 : 0.4);
+    g.append('rect').attr('x', x(String(r.stop))).attr('width', x.step()).attr('y', 30).attr('height', H - 60).style('fill', 'transparent');
+    if (x.bandwidth() >= 26) svg.append('text').attr('class', 'cellv').attr('x', bx + bw / 2).attr('y', r.net >= 0 ? top - 5 : top + h + 13)
+      .attr('text-anchor', 'middle').style('font-size', '11px').text(f1(r.net));
+    const lx = bx + bw / 2, text = r.stop === 0 ? 'None' : String(r.stop), w = measure(svg, text);
+    if (lx - w / 2 >= lastX + 4) { svg.append('text').attr('class', r.stop === stop ? 'strong' : null).attr('x', lx).attr('y', H - 24).attr('text-anchor', 'middle').text(text); lastX = lx + w / 2; }
+    g.on('click', () => useStop(r.stop))
+      .on('keydown', (ev) => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); useStop(r.stop); } })
+      .on('pointerenter pointermove', (ev) => {
+        tipLines(tip, name, [['Net per trade', `${FMT.ticks(r.net)} ${u}`], ['Win rate', FMT.pct(r.win)]]);
+        tip.hidden = false; const [mx, my] = d3.pointer(ev, el); tipAt(el, tip, mx, my);
+      })
+      .on('pointerleave', () => { tip.hidden = true; });
+  }
+  svg.append('text').attr('x', W - 6).attr('y', H - 6).attr('text-anchor', 'end').text(`Stop, ${u} from entry`);
+});
+
+dash.draw('tmonths', (el) => {
+  const d = dash.data('trades'), p = planOf();
+  if (d.status !== 'ok') { notReady(el, d); return; }
+  if (!p) { notReady(el, dash.data('plans')); return; }
+  el.classList.remove('dash-skeleton'); el.replaceChildren();
+  const rows = d.data.filter((r) => r.test === p.id).sort((a, b) => a.date < b.date ? -1 : 1);
+  if (!rows.length) { emptyNote(el, 'No month-ends recorded for this plan.'); return; }
+  const u = unitOf(p);
+  const W = Math.max(300, el.clientWidth || 600), H = 290;
+  const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`).attr('role', 'img').attr('aria-label', 'Result of the plan at each month-end');
+  const y = d3.scaleLinear(d3.extent(rows.map((r) => r.net).concat([0, p.plan_net_ticks || 0])), [H - 30, 40]).nice();
+  const left = d3.max(y.ticks(5), (t) => measure(svg, FMT.ticks(t))) + 10;
+  const x = d3.scaleBand(rows.map((r) => r.date), [left, W - 6]).paddingInner(rows.length > 60 ? 0.1 : 0.25);
+  yAxis(svg, y, left, W - 6);
+  const head = `${p.root === 'FXB' ? 'Basket' : p.root} ${p.direction.toLowerCase()}, in ${(p.entry_clock || '').split(' ')[0]}, out ${p.exit_clock}, ${p.stop ? `stop ${p.stop} ${u}` : 'no stop'}`;
+  svg.append('text').attr('class', 'strong').attr('x', 0).attr('y', 14).text(head);
+  const bw = Math.min(32, Math.max(1, x.bandwidth())), off = (x.bandwidth() - bw) / 2;
+  svg.append('g').selectAll('rect').data(rows).join('rect').attr('x', (r) => x(r.date) + off).attr('width', bw).attr('rx', Math.min(2, bw / 2))
+    .attr('y', (r) => Math.min(y(r.net), y(0))).attr('height', (r) => Math.max(1, Math.abs(y(r.net) - y(0))))
+    .style('fill', (r) => r.net >= 0 ? 'var(--color-ok)' : 'var(--color-bad)').style('opacity', (r) => r.stopped ? 0.4 : 1);
+  if (p.plan_net_ticks != null) {
+    const ay = y(p.plan_net_ticks), label = `Average ${FMT.ticks(p.plan_net_ticks)} ${u}`;
+    svg.append('line').attr('x1', left).attr('x2', W - 6).attr('y1', ay).attr('y2', ay).style('stroke', 'var(--cds-chart-reference)').attr('stroke-dasharray', '4 3');
+    svg.append('text').attr('x', W - 6).attr('y', 30).attr('text-anchor', 'end').text(label);
+  }
+  const parse = (s) => new Date(s + 'T00:00:00Z');
+  const many = rows.length > 24;
+  const labels = many ? rows.filter((r, i) => i === 0 || r.date.slice(0, 4) !== rows[i - 1].date.slice(0, 4)) : rows.filter((r, i) => i % Math.ceil(rows.length / 8) === 0);
+  const fmtL = many ? d3.utcFormat('%Y') : d3.utcFormat('%b %y');
+  let lastX = -Infinity;
+  for (const r of labels) {
+    const lx = x(r.date) + x.bandwidth() / 2; const text = fmtL(parse(r.date));
+    const w = measure(svg, text); if (lx - w / 2 < lastX + 6) continue;
+    svg.append('text').attr('x', lx).attr('y', H - 10).attr('text-anchor', 'middle').text(text); lastX = lx + w / 2;
+  }
+  const tip = document.createElement('div'); tip.className = 'me-tip'; tip.hidden = true; el.append(tip);
+  const hl = svg.append('rect').attr('y', 34).attr('height', H - 64).style('fill', 'var(--cds-chart-grid)').style('opacity', 0);
+  hl.lower();
+  svg.append('g').selectAll('rect').data(rows).join('rect').attr('x', (r) => x(r.date)).attr('width', x.step()).attr('y', 34).attr('height', H - 64).style('fill', 'transparent')
+    .on('pointerenter pointermove', (ev, r) => {
+      hl.attr('x', x(r.date)).attr('width', x.bandwidth()).style('opacity', 1);
+      const lines = [['Net', `${FMT.ticks(r.net)} ${u}`], ['Heat', `${f1(r.mae)} ${u}`]];
+      if (r.stopped) lines.push(['Stopped out', '']);
+      tipLines(tip, `${d3.utcFormat('%a %-d %b %Y')(parse(r.date))} · ${r.contract}`, lines);
+      tip.hidden = false; const [px, py] = d3.pointer(ev, el); tipAt(el, tip, px, py);
+    })
+    .on('pointerleave', () => { tip.hidden = true; hl.style('opacity', 0); });
+});
+</script>
