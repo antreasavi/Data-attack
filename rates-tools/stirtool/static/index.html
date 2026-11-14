@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fed STIR Scenarios</title>
+<style>
+:root {
+  color-scheme: dark;
+  --page: #0d0d0d;
+  --surface-1: #1a1a19;
+  --surface-2: #232321;
+  --text-primary: #f0efec;
+  --text-secondary: #c3c2b7;
+  --text-muted: #898781;
+  --grid: #2c2c2a;
+  --baseline: #383835;
+  --border: rgba(255,255,255,0.10);
+  --series-now: #3987e5;      /* categorical slot 1 (dark) */
+  --series-scn: #d95926;      /* categorical slot 2 (dark) */
+  --ref: #898781;             /* settlement reference line */
+  --good: #0ca30c;
+  --warning: #fab219;
+  --critical: #d03b3b;
+  --rich: #e66767;            /* diverging: price above curve */
+  --cheap: #3987e5;           /* diverging: price below curve */
+  --accent-wash: rgba(57,135,229,0.16);
+  --scn-wash: rgba(217,89,38,0.18);
+  --font: system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--page); color: var(--text-primary); font: 13px/1.4 var(--font); }
+button, input, select { font: inherit; color: inherit; }
+.num { font-variant-numeric: tabular-nums; }
+.muted { color: var(--text-muted); }
+.sec { color: var(--text-secondary); }
+
+header { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; padding: 10px 16px;
+  border-bottom: 1px solid var(--border); position: sticky; top: 0; background: var(--page); z-index: 5; }
+header h1 { font-size: 15px; margin: 0; font-weight: 600; letter-spacing: .2px; }
+.chip { display: inline-flex; align-items: center; gap: 6px; padding: 3px 9px; border-radius: 999px;
+  background: var(--surface-2); border: 1px solid var(--border); font-size: 12px; white-space: nowrap; }
+.dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+.facts { display: flex; flex-wrap: wrap; gap: 6px 14px; color: var(--text-secondary); font-size: 12px; }
+.facts b { color: var(--text-primary); font-weight: 600; }
+.spacer { flex: 1; }
+
+.seg { display: inline-flex; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
+.seg button { background: var(--surface-1); border: 0; padding: 5px 10px; cursor: pointer; color: var(--text-secondary); }
+.seg button + button { border-left: 1px solid var(--border); }
+.seg button.on { background: var(--accent-wash); color: var(--text-primary); }
+.btn { background: var(--surface-2); border: 1px solid var(--border); border-radius: 6px; padding: 5px 10px; cursor: pointer; }
+.btn:hover, .seg button:hover { color: var(--text-primary); }
+.btn:focus-visible, .seg button:focus-visible, .ob:focus-visible { outline: 2px solid var(--series-now); outline-offset: 1px; }
+
+main { padding: 12px 16px 40px; display: grid; gap: 14px; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+.card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; min-width: 0; }
+.card h2 { font-size: 13px; margin: 0 0 8px; font-weight: 600; display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.card h2 .sub { font-weight: 400; color: var(--text-muted); font-size: 12px; }
+.wide { grid-column: 1 / -1; }
+@media (max-width: 1100px) { main { grid-template-columns: minmax(0, 1fr); } }
+
+.scroll { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; }
+th, td { padding: 5px 8px; text-align: right; white-space: nowrap; border-bottom: 1px solid var(--grid); }
+th { color: var(--text-muted); font-weight: 500; font-size: 12px; position: sticky; top: 0; background: var(--surface-1); }
+th:first-child, td:first-child { text-align: left; }
+tbody tr:hover { background: rgba(255,255,255,0.03); }
+td.l, th.l { text-align: left; }
+.sym { font-weight: 600; }
+.prod { color: var(--text-muted); font-size: 11px; margin-left: 4px; }
+.age-ok { color: var(--text-secondary); }
+.age-warn { color: var(--warning); }
+.big { font-weight: 700; color: var(--text-primary); }
+.tgt { color: var(--text-primary); font-weight: 600; }
+.scn-col { background: var(--scn-wash); }
+.top1 td { box-shadow: inset 3px 0 0 var(--series-scn); }
+.lagbar { display: inline-block; height: 8px; border-radius: 2px; vertical-align: middle; margin-left: 6px; }
+
+/* meeting buttons */
+.ob { min-width: 42px; padding: 3px 6px; border-radius: 5px; border: 1px solid var(--border); background: var(--surface-2);
+  color: var(--text-secondary); cursor: pointer; font-size: 12px; }
+.ob:hover { color: var(--text-primary); border-color: rgba(255,255,255,0.25); }
+.ob.on { background: var(--series-scn); border-color: var(--series-scn); color: #fff; }
+.ob.near { border-color: var(--series-now); color: var(--text-primary); }
+.clear { background: none; border: 0; color: var(--text-muted); cursor: pointer; padding: 0 4px; font-size: 14px; }
+.assumed { color: var(--text-muted); font-size: 11px; }
+
+/* chart */
+.chart-wrap { position: relative; }
+svg text { fill: var(--text-muted); font-size: 11px; font-family: var(--font); }
+.tip { position: absolute; pointer-events: none; background: var(--surface-2); border: 1px solid var(--border);
+  border-radius: 6px; padding: 7px 9px; font-size: 12px; min-width: 150px; display: none; z-index: 3; box-shadow: 0 4px 16px rgba(0,0,0,.5); }
+.tip .row { display: flex; gap: 8px; align-items: center; justify-content: space-between; }
+.legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: 12px; color: var(--text-secondary); margin: 2px 0 6px; }
+.key { display: inline-block; width: 16px; height: 0; border-top: 2px solid; vertical-align: middle; margin-right: 5px; }
+
+/* speakers */
+.spk { display: grid; grid-template-columns: 112px 1fr auto; gap: 4px 10px; align-items: center; padding: 6px 4px;
+  border-bottom: 1px solid var(--grid); cursor: pointer; }
+.spk:hover { background: rgba(255,255,255,0.03); }
+.spk.sel { background: var(--accent-wash); }
+.spk .who { font-weight: 600; }
+.spk .topic { color: var(--text-muted); font-size: 12px; grid-column: 2 / 3; }
+.spk-list { max-height: 330px; overflow-y: auto; }
+form.add { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+form.add input { background: var(--surface-2); border: 1px solid var(--border); border-radius: 5px; padding: 4px 7px; }
+select { background: var(--surface-2); border: 1px solid var(--border); border-radius: 5px; padding: 3px 6px; }
+.warnbox { color: var(--warning); font-size: 12px; }
+.err { color: var(--critical); }
+.note { font-size: 12px; color: var(--text-muted); margin-top: 6px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Fed STIR Scenarios</h1>
+  <span class="chip" id="feed"><span class="dot" style="background:var(--text-muted)"></span>connecting…</span>
+  <div class="facts num" id="facts"></div>
+  <span class="spacer"></span>
+  <span class="sec">Path shift</span>
+  <div class="seg" id="modes" role="group" aria-label="Path shift mode">
+    <button data-mode="whole" title="The change carries through every later meeting">Whole path</button>
+    <button data-mode="pull" title="Later meetings keep their pricing: the end rate is unchanged">Pull-forward</button>
+    <button data-mode="fade" title="Later meetings move by a shrinking share of the change">Fade</button>
+  </div>
+  <label class="sec" id="fadebox" title="Share of the change passed to each later meeting">
+    fade <input type="range" id="fade" min="0" max="1" step="0.05" style="width:80px;vertical-align:middle"> <span id="fadev" class="num"></span>
+  </label>
+  <div class="seg" id="units" role="group" aria-label="Units">
+    <button data-u="bp" class="on">bp</button><button data-u="pct">hikes %</button>
+  </div>
+  <button class="btn" id="reset">Reset scenario</button>
+</header>
+
+<main>
+  <section class="card wide">
+    <h2>Priced by each FOMC meeting <span class="sub" id="chartsub">cumulative move vs today's EFFR</span></h2>
+    <div class="legend" id="legend"></div>
+    <div class="chart-wrap" id="chartwrap"><svg id="chart" width="100%" height="270" role="img" aria-label="Rate path chart"></svg><div class="tip" id="tip"></div></div>
+  </section>
+
+  <section class="card">
+    <h2>Scenario by meeting <span class="sub">click the move you think the market will price by that meeting</span></h2>
+    <div class="scroll"><table id="mtable"></table></div>
+    <div class="note">Values are the total move priced by that meeting, in bp vs EFFR <span id="effrnote"></span>. 25 bp = one hike. Blue outline = nearest to what is priced now.</div>
+  </section>
+
+  <section class="card">
+    <h2>Contracts <span class="sub" id="ctsub"></span>
+      <span class="spacer"></span>
+      <span class="sec" style="font-size:12px">Sort</span>
+      <div class="seg" id="sorts" role="group" aria-label="Sort contracts">
+        <button data-s="strip" class="on">Strip</button><button data-s="move">Ticks to target</button><button data-s="lag">Lagging</button>
+      </div>
+    </h2>
+    <div class="scroll"><table id="ctable"></table></div>
+    <div class="note">Lag = how far a contract has drifted from the rest of the strip since settlement (ticks). <span style="color:var(--rich)">Rich</span> = price above the curve, <span style="color:var(--cheap)">cheap</span> = below. Quotes update only when a trade prints; amber age = no trade for 10+ min.</div>
+  </section>
+
+  <section class="card">
+    <h2>Fed speakers <span class="sub">next 14 days · Board calendar + your own</span></h2>
+    <div class="spk-list" id="spklist"></div>
+    <form class="add" id="addspk">
+      <input name="speaker" placeholder="Speaker (e.g. Logan)" required style="width:150px">
+      <input name="when" type="datetime-local" required title="Time in New York (ET)">
+      <input name="topic" placeholder="Topic (optional)" style="width:140px">
+      <button class="btn" type="submit">Add speaker</button>
+    </form>
+  </section>
+
+  <section class="card">
+    <h2>Speaker ladder <span class="sub" id="ladsub">pick a speaker</span>
+      <span class="spacer"></span>
+      <span class="sec" style="font-size:12px">Focus meeting</span> <select id="focus"></select>
+    </h2>
+    <div class="scroll"><table id="ltable"></table></div>
+    <div class="note" id="ladnote"></div>
+  </section>
+
+  <section class="card wide">
+    <div class="note" id="footer"></div>
+  </section>
+</main>
+
+<script>
+const OUTCOMES = [-25, 0, 25, 50, 75, 100];
+const OUT_LABEL = {'-25': 'Cut', '0': 'Hold', '25': '+25', '50': '+50', '75': '+75', '100': '+100'};
+let S = null;            // latest state
+let units = 'bp';
+let sortBy = 'strip';
+let selSpeaker = null;
+const $ = id => document.getElementById(id);
+
+// ---------- formatting ----------
+const mon = d => new Date(d + 'T12:00:00Z').toLocaleString('en-US', {month: 'short', timeZone: 'UTC'});
+const meetLabel = d => mon(d) + ' ' + d.slice(2, 4);
+const meetLong = d => new Date(d + 'T12:00:00Z').toLocaleDateString('en-GB', {day: 'numeric', month: 'short', year: '2-digit', timeZone: 'UTC'});
+const dp = t => (t < 0.005 ? 4 : 3);
+const px = (v, t) => v == null ? '–' : v.toFixed(dp(t));
+const sgn = (v, d = 1) => v == null ? '–' : (v > 0 ? '+' : v < 0 ? '−' : '±') + Math.abs(v).toFixed(d);
+const pv = v => units === 'bp' ? v : v / 25 * 100;           // bp or "% of a hike"
+const pu = v => v == null ? '–' : units === 'bp' ? sgn(v, 1) : sgn(v / 25 * 100, 0) + '%';
+function age(s) {
+  if (s == null) return '–';
+  if (s < 60) return Math.round(s) + 's';
+  if (s < 3600) return Math.round(s / 60) + 'm';
+  return (s / 3600).toFixed(1) + 'h';
+}
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[c]));
+
+// ---------- server calls ----------
+async function post(url, body) {
+  const r = await fetch(url, {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(body)});
+  const j = await r.json();
+  if (!r.ok) { alert(j.error || 'request failed'); return; }
+  render(j);
+}
+function setEdit(date, bp) { post('/api/scenario', {set: {[date]: bp}}); }
+
+// ---------- header ----------
+function renderHeader() {
+  const f = S.feed, r = S.rates;
+  const col = {live: 'var(--good)', quiet: 'var(--warning)', closed: 'var(--text-muted)'}[f.status] || 'var(--critical)';
+  const label = {live: 'LIVE', quiet: 'QUIET', closed: 'MARKET CLOSED'}[f.status] || 'NO DATA';
+  const last = f.last_tick_utc ? new Date(f.last_tick_utc).toLocaleTimeString('en-GB', {hour: '2-digit', minute: '2-digit', second: '2-digit'}) : '–';
+  $('feed').innerHTML = `<span class="dot" style="background:${col}"></span><b>${label}</b><span class="muted num">last tick ${last} (${age(f.age_s)} ago)</span>`;
+  const tgt = r.target && r.target[0] != null ? `${r.target[0].toFixed(2)}–${r.target[1].toFixed(2)}` : '–';
+  $('facts').innerHTML = `<span>EFFR <b>${r.effr.toFixed(2)}</b> <span class="muted">${r.effr_date.slice(5)}</span></span>
+    <span>SOFR <b>${r.sofr.toFixed(2)}</b> <span class="muted">${r.sofr_date.slice(5)}</span></span>
+    <span>Target <b>${tgt}</b></span>
+    <span title="SOFR minus EFFR, fitted to the strip (recent average ${r.spread_prior_bp.toFixed(1)}bp)">SOFR−EFFR <b>${r.spread_bp.toFixed(1)}bp</b></span>
+    <span>vs settle <b>${S.prev_trade_date.slice(5)}</b></span>`;
+  $('effrnote').textContent = `(${r.effr.toFixed(2)}%, ${r.effr_date})`;
+  document.querySelectorAll('#modes button').forEach(b => b.classList.toggle('on', b.dataset.mode === S.scenario.mode));
+  $('fadebox').style.display = S.scenario.mode === 'fade' ? '' : 'none';
+  if (document.activeElement !== $('fade')) $('fade').value = S.scenario.fade;
+  $('fadev').textContent = (+S.scenario.fade).toFixed(2);
+  $('reset').disabled = !S.scenario.active;
+}
+
+// ---------- chart ----------
+function renderChart() {
+  const svg = $('chart'), wrap = $('chartwrap');
+  const W = wrap.clientWidth, H = 270, m = {l: 48, r: 70, t: 14, b: 28};
+  const ms = S.meetings;
+  if (!ms.length) { svg.innerHTML = ''; return; }
+  // meetings evenly spaced (like a meeting-indexed strip); position 0 = today at the current EFFR
+  const step = (W - m.l - m.r) / ms.length;
+  const xs = ms.map((_, i) => i + 1), t0 = 0;
+  const X = i => m.l + i * step;
+  const series = [
+    {key: 'settle', name: `Settlement ${S.prev_trade_date.slice(5)}`, col: 'var(--ref)', dash: '5 4', vals: ms.map(d => d.settle_bp)},
+    {key: 'now', name: 'Now', col: 'var(--series-now)', vals: ms.map(d => d.priced_bp)},
+  ];
+  if (S.scenario.active) series.push({key: 'scn', name: 'Scenario', col: 'var(--series-scn)', vals: ms.map(d => d.scenario_bp)});
+  const all = series.flatMap(s => s.vals).filter(v => v != null).concat([0]);
+  let lo = Math.min(...all), hi = Math.max(...all);
+  lo = Math.floor((lo - 5) / 25) * 25; hi = Math.ceil((hi + 5) / 25) * 25;
+  const Y = v => m.t + (hi - v) / (hi - lo) * (H - m.t - m.b);
+  let g = '';
+  for (let v = lo; v <= hi; v += 25) {
+    g += `<line x1="${m.l}" x2="${W - m.r}" y1="${Y(v)}" y2="${Y(v)}" stroke="${v === 0 ? 'var(--baseline)' : 'var(--grid)'}" stroke-width="1"/>`;
+    g += `<text x="${m.l - 6}" y="${Y(v) + 4}" text-anchor="end" class="num">${units === 'bp' ? (v > 0 ? '+' : '') + v : (v / 25 * 100).toFixed(0) + '%'}</text>`;
+  }
+  ms.forEach((d, i) => {
+    g += `<text x="${X(xs[i])}" y="${H - 8}" text-anchor="middle">${meetLabel(d.date)}${d.assumed ? '*' : ''}</text>`;
+  });
+  g += `<text x="${X(0)}" y="${H - 8}" text-anchor="middle">today</text>`;
+  const ends = [];
+  for (const s of series) {
+    const pts = s.vals.map((v, i) => v == null ? null : [X(xs[i]), Y(v)]).filter(Boolean);
+    if (!pts.length) continue;
+    const dpath = `M${X(t0)},${Y(0)} ` + pts.map(p => `L${p[0]},${p[1]}`).join(' ');
+    g += `<path d="${dpath}" fill="none" stroke="${s.col}" stroke-width="2" ${s.dash ? `stroke-dasharray="${s.dash}"` : ''} stroke-linejoin="round"/>`;
+    if (s.key !== 'settle') pts.forEach(p => g += `<circle cx="${p[0]}" cy="${p[1]}" r="4" fill="${s.col}" stroke="var(--surface-1)" stroke-width="2"/>`);
+    const lp = pts[pts.length - 1];
+    ends.push({x: lp[0] + 8, y: lp[1] + 4, text: s.name.split(' ')[0]});
+  }
+  // end labels: push apart so they never overlap (>= 13px)
+  ends.sort((a, b) => a.y - b.y);
+  for (let k = 1; k < ends.length; k++) if (ends[k].y - ends[k - 1].y < 13) ends[k].y = ends[k - 1].y + 13;
+  ends.forEach(e => g += `<text x="${e.x}" y="${e.y}" style="fill:var(--text-secondary)">${e.text}</text>`);
+  g += `<line id="xhair" x1="0" x2="0" y1="${m.t}" y2="${H - m.b}" stroke="var(--text-muted)" stroke-width="1" style="display:none"/>`;
+  g += `<rect x="${m.l}" y="${m.t}" width="${W - m.l - m.r}" height="${H - m.t - m.b}" fill="transparent" id="hit"/>`;
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  svg.innerHTML = g;
+  $('legend').innerHTML = series.map(s => `<span><span class="key" style="border-top-color:${s.col};${s.dash ? 'border-top-style:dashed' : ''}"></span>${esc(s.name)}</span>`).join('')
+    + `<span class="muted">${ms.some(d => d.assumed) ? '* date assumed (not yet published by the Fed)' : ''}</span>`;
+  $('chartsub').textContent = units === 'bp' ? "cumulative move vs today's EFFR, bp" : "cumulative move vs today's EFFR, % of one 25bp hike";
+  const hit = $('hit'), tip = $('tip'), xh = $('xhair');
+  hit.onmousemove = e => {
+    const r = svg.getBoundingClientRect(), mx = (e.clientX - r.left) * W / r.width;
+    let i = 0, best = 1e9;
+    xs.forEach((t, k) => { const dd = Math.abs(X(t) - mx); if (dd < best) { best = dd; i = k; } });
+    const d = ms[i], cx = X(xs[i]);
+    xh.setAttribute('x1', cx); xh.setAttribute('x2', cx); xh.style.display = '';
+    tip.innerHTML = `<div style="margin-bottom:4px"><b>${meetLong(d.date)}</b>${d.assumed ? ' <span class="muted">(assumed)</span>' : ''}</div>`
+      + series.map(s => `<div class="row"><span><span class="key" style="border-top-color:${s.col};${s.dash ? 'border-top-style:dashed' : ''}"></span>${esc(s.name.split(' ')[0])}</span><b class="num">${pu(s.vals[i])}</b></div>`).join('')
+      + `<div class="row muted"><span>EFFR after</span><span class="num">${d.effr_after.toFixed(3)}%</span></div>`;
+    tip.style.display = 'block';
+    const left = cx * r.width / W + 14;
+    tip.style.left = Math.min(left, r.width - tip.offsetWidth - 4) + 'px';
+    tip.style.top = '18px';
+  };
+  hit.onmouseleave = () => { tip.style.display = 'none'; xh.style.display = 'none'; };
+}
+
+// ---------- meeting table ----------
+function renderMeetings() {
+  const rows = S.meetings.map(d => {
+    const near = OUTCOMES.reduce((a, b) => Math.abs(b - d.priced_bp) < Math.abs(a - d.priced_bp) ? b : a);
+    const edit = S.scenario.edits[d.date];
+    const btns = OUTCOMES.map(o => `<button class="ob${edit === o ? ' on' : ''}${o === near && edit !== o ? ' near' : ''}" data-d="${d.date}" data-o="${o}" title="Price ${OUT_LABEL[o]} by ${meetLong(d.date)}">${OUT_LABEL[o]}</button>`).join(' ');
+    const chg = d.change_bp;
+    return `<tr><td class="l"><b>${meetLabel(d.date)}</b> <span class="muted">${d.date.slice(8)}</span>${d.assumed ? ' <span class="assumed">assumed</span>' : ''}</td>
+      <td class="num big">${pu(d.priced_bp)}</td>
+      <td class="num sec">${chg == null ? '–' : pu(chg)}</td>
+      <td class="l">${btns}</td>
+      <td class="num ${S.scenario.active ? 'tgt' : 'muted'}">${S.scenario.active ? pu(d.scenario_bp) : '–'}</td>
+      <td>${edit != null ? `<button class="clear" data-clear="${d.date}" title="Remove this edit">×</button>` : ''}</td></tr>`;
+  }).join('');
+  $('mtable').innerHTML = `<thead><tr><th class="l">Meeting</th><th>Priced now</th><th>vs settle</th><th class="l">Set scenario (total by meeting)</th><th>Scenario</th><th></th></tr></thead><tbody>${rows}</tbody>`;
+  $('mtable').querySelectorAll('.ob').forEach(b => b.onclick = () => {
+    const d = b.dataset.d, o = +b.dataset.o;
+    setEdit(d, S.scenario.edits[d] === o ? null : o);
+  });
+  $('mtable').querySelectorAll('.clear').forEach(b => b.onclick = () => setEdit(b.dataset.clear, null));
+}
+
+// ---------- contracts ----------
+function renderContracts() {
+  const act = S.scenario.active;
+  let cs = S.contracts.slice();
+  if (sortBy === 'move' && act) cs.sort((a, b) => Math.abs(b.scn_ticks || 0) - Math.abs(a.scn_ticks || 0));
+  if (sortBy === 'lag') cs.sort((a, b) => Math.abs(b.lag_ticks || 0) - Math.abs(a.lag_ticks || 0));
+  const rows = cs.map(c => {
+    const stale = c.stale;
+    const lagT = c.lag_ticks;
+    const lagCol = lagT == null ? '' : lagT > 0 ? 'var(--rich)' : 'var(--cheap)';
+    const lagW = lagT == null ? 0 : Math.min(40, Math.abs(lagT) * 12);
+    return `<tr><td class="l"><span class="sym">${c.symbol}</span></td>
+      <td class="num">${px(c.bid, c.tick)}</td><td class="num">${px(c.ask, c.tick)}</td><td class="num sec">${px(c.last, c.tick)}</td>
+      <td class="num ${stale ? 'age-warn' : 'age-ok'}" title="last trade ${c.last_time || '–'}">${stale ? '⚠ ' : ''}${age(c.age_s)}</td>
+      <td class="num sec" title="settlement ${px(c.settle, c.tick)} (${c.settle_source || 'n/a'})">${sgn(c.chg_ticks, 1)}</td>
+      <td class="num sec" title="curve fair value; market − fair = ${sgn(c.resid_bp, 2)} bp">${px(c.fair, c.tick)}</td>
+      <td class="num" title="${lagT == null ? '' : (lagT > 0 ? 'rich' : 'cheap') + ' vs strip since settlement: ' + sgn(c.lag_bp, 2) + ' bp'}">${sgn(lagT, 1)}<span class="lagbar" style="width:${lagW}px;background:${lagCol}"></span></td>
+      <td class="num ${act ? 'tgt scn-col' : 'muted'}">${act ? px(c.target, c.tick) : '–'}</td>
+      <td class="num ${act ? 'scn-col big' : 'muted'}">${act ? sgn(c.scn_ticks, 0) : '–'}</td>
+      <td class="num ${act ? 'scn-col sec' : 'muted'}" title="per lot">${act ? (c.scn_usd >= 0 ? '+$' : '−$') + Math.abs(c.scn_usd).toFixed(0) : '–'}</td></tr>`;
+  }).join('');
+  $('ctable').innerHTML = `<thead><tr><th class="l">Contract</th><th>Bid</th><th>Ask</th><th>Last</th><th>Age</th><th>Chg (t)</th><th>Fair</th><th>Lag (t)</th>
+    <th class="scn-col">Target</th><th class="scn-col">Ticks</th><th class="scn-col">$/lot</th></tr></thead><tbody>${rows}</tbody>`;
+  const ed = Object.entries(S.scenario.edits).map(([d, v]) => `${meetLabel(d)} ${pu(v)}`).join(', ');
+  $('ctsub').textContent = act ? `scenario: ${ed} · ${({whole: 'whole path', pull: 'pull-forward', fade: 'fade ' + S.scenario.fade})[S.scenario.mode]}` : 'no scenario set: pick one on the left';
+  document.querySelectorAll('#sorts button').forEach(b => b.classList.toggle('on', b.dataset.s === sortBy));
+}
+
+// ---------- speakers & ladder ----------
+function renderSpeakers() {
+  const list = S.speakers;
+  if (!selSpeaker || !list.find(s => s.id === selSpeaker)) selSpeaker = list.length ? list[0].id : null;
+  $('spklist').innerHTML = list.length ? list.map(s => {
+    const w = new Date(s.when_et);
+    const when = w.toLocaleDateString('en-GB', {weekday: 'short', day: 'numeric', month: 'short'}) + ' ' + (s.time_known ? s.when_et.slice(11, 16) : '') + ' ET';
+    return `<div class="spk${s.id === selSpeaker ? ' sel' : ''}" data-id="${s.id}">
+      <span class="num sec">${when}</span><span class="who">${esc(s.speaker)} <span class="muted" style="font-weight:400">· ${esc(s.kind)}</span></span>
+      <span class="muted">${s.focus_meeting ? '→ ' + meetLabel(s.focus_meeting) : ''}${s.source === 'added by you' ? ` <button class="clear" data-rm="${s.id}" title="Remove">×</button>` : ''}</span>
+      <span class="topic">${esc(s.topic)}</span></div>`;
+  }).join('') : '<div class="muted">No scheduled speakers in the next 14 days.</div>';
+  $('spklist').querySelectorAll('.spk').forEach(el => el.onclick = e => {
+    if (e.target.dataset.rm) { post('/api/speaker', {action: 'remove', id: e.target.dataset.rm}); return; }
+    selSpeaker = el.dataset.id; renderSpeakers(); renderLadder();
+  });
+}
+
+function renderLadder() {
+  const s = S.speakers.find(x => x.id === selSpeaker);
+  const sel = $('focus');
+  sel.innerHTML = S.meetings.map(d => `<option value="${d.date}">${meetLabel(d.date)} (${d.date.slice(8)})</option>`).join('');
+  if (!s) { $('ltable').innerHTML = ''; $('ladsub').textContent = 'pick a speaker'; $('ladnote').textContent = ''; return; }
+  sel.value = s.focus_meeting || '';
+  sel.onchange = () => post('/api/speaker', {action: 'focus', id: s.id, meeting: sel.value});
+  const lad = S.ladders[s.focus_meeting];
+  $('ladsub').textContent = `${s.speaker} · ${s.when_et.replace('T', ' ')} ET`;
+  if (!lad) { $('ltable').innerHTML = '<tr><td class="muted">Ladder updating…</td></tr>'; return; }
+  const near = lad.outcomes.reduce((a, b) => Math.abs(b.outcome_bp - lad.priced_now_bp) < Math.abs(a.outcome_bp - lad.priced_now_bp) ? b : a).outcome_bp;
+  const head = lad.outcomes.map(o => `<th class="${o.outcome_bp === near ? 'scn-col' : ''}">${OUT_LABEL[o.outcome_bp]}${o.outcome_bp === near ? '<br><span class="muted" style="font-weight:400">≈ now</span>' : ''}</th>`).join('');
+  const rows = S.contracts.map(c => `<tr><td class="l"><span class="sym">${c.symbol}</span> <span class="muted num">${px(c.mid, c.tick)}</span></td>` +
+    lad.outcomes.map(o => { const v = o.contracts[c.symbol]; return `<td class="num ${o.outcome_bp === near ? 'scn-col' : ''}"><span class="tgt">${px(v.target, c.tick)}</span> <span class="muted">${sgn(v.ticks, 0)}</span></td>`; }).join('') + '</tr>').join('');
+  $('ltable').innerHTML = `<thead><tr><th class="l">Contract · mid</th>${head}</tr></thead><tbody>${rows}</tbody>`;
+  $('ladnote').textContent = `Outcome = total move priced by the ${meetLong(lad.meeting)} meeting (now ${sgn(lad.priced_now_bp, 1)} bp). Target price and ticks from the current mid, using the ${({whole: 'whole-path', pull: 'pull-forward', fade: 'fade'})[lad.mode]} shift.`;
+}
+
+function renderFooter() {
+  const src = S.sources || {}, e = S.errors || {};
+  const fx = src.fixings ? `NY Fed fixings ${src.fixings.effr.source} (${(src.fixings.effr.fetched_at || '').slice(11, 16)} UTC)` : '';
+  const fo = src.fomc ? `FOMC dates ${src.fomc.source}` : '';
+  const sp = src.speakers ? `speakers ${src.speakers.source}` : '';
+  const errs = Object.entries(e).map(([k, v]) => `<span class="err">${esc(k)}: ${esc(v)}</span>`).join(' · ');
+  $('footer').innerHTML = `Sierra: ${esc(S.feed.data_dir)} / ${esc(S.feed.chartbook)} · ${fx} · ${fo} · ${sp} · trade date ${S.trade_date} ${errs ? '<br>' + errs : ''}`;
+}
+
+function render(state) {
+  if (!state || !state.meetings) return;
+  if (S && state.now_utc < S.now_utc) return;      // an older update arrived late: ignore it
+  S = state;
+  renderHeader(); renderChart(); renderMeetings(); renderContracts(); renderSpeakers(); renderLadder(); renderFooter();
+}
+
+// ---------- controls ----------
+document.querySelectorAll('#modes button').forEach(b => b.onclick = () => post('/api/scenario', {mode: b.dataset.mode}));
+$('fade').onchange = e => post('/api/scenario', {fade: +e.target.value});
+$('fade').oninput = e => $('fadev').textContent = (+e.target.value).toFixed(2);
+$('reset').onclick = () => post('/api/scenario', {reset: true});
+document.querySelectorAll('#units button').forEach(b => b.onclick = () => {
+  units = b.dataset.u; document.querySelectorAll('#units button').forEach(x => x.classList.toggle('on', x === b)); if (S) render(S);
+});
+document.querySelectorAll('#sorts button').forEach(b => b.onclick = () => { sortBy = b.dataset.s; if (S) renderContracts(); });
+$('addspk').onsubmit = e => {
+  e.preventDefault();
+  const f = new FormData(e.target);
+  post('/api/speaker', {action: 'add', speaker: f.get('speaker'), when_et: f.get('when'), topic: f.get('topic')});
+  e.target.reset();
+};
+window.addEventListener('resize', () => S && renderChart());
+
+// ---------- live stream ----------
+function connect() {
+  const es = new EventSource('/api/stream');
+  es.onmessage = ev => render(JSON.parse(ev.data));
+  es.onerror = () => {
+    $('feed').innerHTML = '<span class="dot" style="background:var(--critical)"></span><b>TOOL OFFLINE</b><span class="muted">reconnecting…</span>';
+  };
+}
+fetch('/api/state').then(r => r.json()).then(render).catch(() => {});
+connect();
+</script>
+</body>
+</html>

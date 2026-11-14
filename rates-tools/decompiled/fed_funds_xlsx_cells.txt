@@ -1,0 +1,800 @@
+
+===== Sheet1
+    A1  Exchange
+    B1  CME
+    C1  CME
+    D1  CME
+    E1  CME
+    F1  CME
+    G1  CME
+    H1  CME
+    I1  CME
+    J1  CME
+    K1  CME
+    L1  CME
+    M1  CME
+    N1  CME
+    A2  Instrument Name
+    B2  ZQH6
+    C2  ZQJ6
+    D2  ZQK6
+    E2  ZQM6
+    F2  ZQN6
+    G2  ZQQ6
+    H2  ZQU6
+    I2  ZQV6
+    J2  ZQX6
+    K2  ZQZ6
+    L2  ZQF7
+    M2  ZQG7
+    N2  ZQH7
+    A3  instrument ID
+    B3  =RTD("tt.rtd",,"Inst",B1,B2)   ->  "services.rtd.failedToFindInstrument"
+    C3  =RTD("tt.rtd",,"Inst",C1,C2)   ->  "services.rtd.failedToFindInstrument"
+    D3  =RTD("tt.rtd",,"Inst",D1,D2)   ->  "services.rtd.failedToFindInstrument"
+    E3  =RTD("tt.rtd",,"Inst",E1,E2)   ->  1173228227003061405
+    F3  =RTD("tt.rtd",,"Inst",F1,F2)   ->  11804036294809825783
+    G3  =RTD("tt.rtd",,"Inst",G1,G2)   ->  8298997090319007208
+    H3  =RTD("tt.rtd",,"Inst",H1,H2)   ->  7551864584289735302
+    I3  =RTD("tt.rtd",,"Inst",I1,I2)   ->  7772853716872034867
+    J3  =RTD("tt.rtd",,"Inst",J1,J2)   ->  13208077381270415860
+    K3  =RTD("tt.rtd",,"Inst",K1,K2)   ->  14618707670258439481
+    L3  =RTD("tt.rtd",,"Inst",L1,L2)   ->  10173148798524565647
+    M3  =RTD("tt.rtd",,"Inst",M1,M2)   ->  880647980586631019
+    N3  =RTD("tt.rtd",,"Inst",N1,N2)   ->  887816061348387785
+    A5  IBidQty
+    B5  =RTD("tt.rtd",,B$3,$A5)   ->  None
+    C5  =RTD("tt.rtd",,C$3,$A5)   ->  None
+    D5  =RTD("tt.rtd",,D$3,$A5)   ->  None
+    E5  =RTD("tt.rtd",,E$3,$A5)   ->  1969
+    F5  =RTD("tt.rtd",,F$3,$A5)   ->  128789
+    G5  =RTD("tt.rtd",,G$3,$A5)   ->  188
+    H5  =RTD("tt.rtd",,H$3,$A5)   ->  1144
+    I5  =RTD("tt.rtd",,I$3,$A5)   ->  506
+    J5  =RTD("tt.rtd",,J$3,$A5)   ->  2214
+    K5  =RTD("tt.rtd",,K$3,$A5)   ->  417
+    L5  =RTD("tt.rtd",,L$3,$A5)   ->  240
+    M5  =RTD("tt.rtd",,M$3,$A5)   ->  6
+    N5  =RTD("tt.rtd",,N$3,$A5)   ->  0
+    A6  BidQty
+    B6  =RTD("tt.rtd",,B$3,$A6)   ->  None
+    C6  =RTD("tt.rtd",,C$3,$A6)   ->  None
+    D6  =RTD("tt.rtd",,D$3,$A6)   ->  None
+    E6  =RTD("tt.rtd",,E$3,$A6)   ->  138069
+    F6  =RTD("tt.rtd",,F$3,$A6)   ->  291216
+    G6  =RTD("tt.rtd",,G$3,$A6)   ->  9062
+    H6  =RTD("tt.rtd",,H$3,$A6)   ->  2680
+    I6  =RTD("tt.rtd",,I$3,$A6)   ->  1607
+    J6  =RTD("tt.rtd",,J$3,$A6)   ->  6195
+    K6  =RTD("tt.rtd",,K$3,$A6)   ->  447
+    L6  =RTD("tt.rtd",,L$3,$A6)   ->  565
+    M6  =RTD("tt.rtd",,M$3,$A6)   ->  29
+    N6  =RTD("tt.rtd",,N$3,$A6)   ->  6
+    A7  Bid
+    B7  =RTD("tt.rtd",,B$3,$A7)   ->  None
+    C7  =RTD("tt.rtd",,C$3,$A7)   ->  None
+    D7  =RTD("tt.rtd",,D$3,$A7)   ->  None
+    E7  =RTD("tt.rtd",,E$3,$A7)   ->  96.3750
+    F7  =RTD("tt.rtd",,F$3,$A7)   ->  96.365
+    G7  =RTD("tt.rtd",,G$3,$A7)   ->  96.350
+    H7  =RTD("tt.rtd",,H$3,$A7)   ->  96.320
+    I7  =RTD("tt.rtd",,I$3,$A7)   ->  96.290
+    J7  =RTD("tt.rtd",,J$3,$A7)   ->  96.260
+    K7  =RTD("tt.rtd",,K$3,$A7)   ->  96.200
+    L7  =RTD("tt.rtd",,L$3,$A7)   ->  96.175
+    M7  =RTD("tt.rtd",,M$3,$A7)   ->  96.150
+    N7  =RTD("tt.rtd",,N$3,$A7)   ->  96.130
+    A8  Ask
+    B8  =RTD("tt.rtd",,B$3,$A8)   ->  None
+    C8  =RTD("tt.rtd",,C$3,$A8)   ->  None
+    D8  =RTD("tt.rtd",,D$3,$A8)   ->  None
+    E8  =RTD("tt.rtd",,E$3,$A8)   ->  96.3775
+    F8  =RTD("tt.rtd",,F$3,$A8)   ->  96.370
+    G8  =RTD("tt.rtd",,G$3,$A8)   ->  96.355
+    H8  =RTD("tt.rtd",,H$3,$A8)   ->  96.325
+    I8  =RTD("tt.rtd",,I$3,$A8)   ->  96.295
+    J8  =RTD("tt.rtd",,J$3,$A8)   ->  96.265
+    K8  =RTD("tt.rtd",,K$3,$A8)   ->  96.205
+    L8  =RTD("tt.rtd",,L$3,$A8)   ->  96.180
+    M8  =RTD("tt.rtd",,M$3,$A8)   ->  96.155
+    N8  =RTD("tt.rtd",,N$3,$A8)   ->  96.135
+    A9  AskQty
+    B9  =RTD("tt.rtd",,B$3,$A9)   ->  None
+    C9  =RTD("tt.rtd",,C$3,$A9)   ->  None
+    D9  =RTD("tt.rtd",,D$3,$A9)   ->  None
+    E9  =RTD("tt.rtd",,E$3,$A9)   ->  15430
+    F9  =RTD("tt.rtd",,F$3,$A9)   ->  73891
+    G9  =RTD("tt.rtd",,G$3,$A9)   ->  65869
+    H9  =RTD("tt.rtd",,H$3,$A9)   ->  7866
+    I9  =RTD("tt.rtd",,I$3,$A9)   ->  4839
+    J9  =RTD("tt.rtd",,J$3,$A9)   ->  587
+    K9  =RTD("tt.rtd",,K$3,$A9)   ->  715
+    L9  =RTD("tt.rtd",,L$3,$A9)   ->  668
+    M9  =RTD("tt.rtd",,M$3,$A9)   ->  775
+    N9  =RTD("tt.rtd",,N$3,$A9)   ->  659
+   A10  IAskQty
+   B10  =RTD("tt.rtd",,B$3,$A10)   ->  None
+   C10  =RTD("tt.rtd",,C$3,$A10)   ->  None
+   D10  =RTD("tt.rtd",,D$3,$A10)   ->  None
+   E10  =RTD("tt.rtd",,E$3,$A10)   ->  0
+   F10  =RTD("tt.rtd",,F$3,$A10)   ->  0
+   G10  =RTD("tt.rtd",,G$3,$A10)   ->  21762
+   H10  =RTD("tt.rtd",,H$3,$A10)   ->  1705
+   I10  =RTD("tt.rtd",,I$3,$A10)   ->  2335
+   J10  =RTD("tt.rtd",,J$3,$A10)   ->  0
+   K10  =RTD("tt.rtd",,K$3,$A10)   ->  483
+   L10  =RTD("tt.rtd",,L$3,$A10)   ->  439
+   M10  =RTD("tt.rtd",,M$3,$A10)   ->  718
+   N10  =RTD("tt.rtd",,N$3,$A10)   ->  588
+   A12  Contract
+   B12  =RTD("tt.rtd",,B$3,$A12)   ->  None
+   C12  =RTD("tt.rtd",,C$3,$A12)   ->  None
+   D12  =RTD("tt.rtd",,D$3,$A12)   ->  None
+   E12  =RTD("tt.rtd",,E$3,$A12)   ->  ZQ Jun26
+   F12  =RTD("tt.rtd",,F$3,$A12)   ->  ZQ Jul26
+   G12  =RTD("tt.rtd",,G$3,$A12)   ->  ZQ Aug26
+   H12  =RTD("tt.rtd",,H$3,$A12)   ->  ZQ Sep26
+   I12  =RTD("tt.rtd",,I$3,$A12)   ->  ZQ Oct26
+   J12  =RTD("tt.rtd",,J$3,$A12)   ->  ZQ Nov26
+   K12  =RTD("tt.rtd",,K$3,$A12)   ->  ZQ Dec26
+   L12  =RTD("tt.rtd",,L$3,$A12)   ->  ZQ Jan27
+   M12  =RTD("tt.rtd",,M$3,$A12)   ->  ZQ Feb27
+   N12  =RTD("tt.rtd",,N$3,$A12)   ->  ZQ Mar27
+   A13  Last
+   B13  =RTD("tt.rtd",,B$3,$A13)   ->  None
+   C13  =RTD("tt.rtd",,C$3,$A13)   ->  None
+   D13  =RTD("tt.rtd",,D$3,$A13)   ->  None
+   E13  =RTD("tt.rtd",,E$3,$A13)   ->  96.3775
+   F13  =RTD("tt.rtd",,F$3,$A13)   ->  96.365
+   G13  =RTD("tt.rtd",,G$3,$A13)   ->  96.355
+   H13  =RTD("tt.rtd",,H$3,$A13)   ->  96.320
+   I13  =RTD("tt.rtd",,I$3,$A13)   ->  96.290
+   J13  =RTD("tt.rtd",,J$3,$A13)   ->  96.265
+   K13  =RTD("tt.rtd",,K$3,$A13)   ->  96.200
+   L13  =RTD("tt.rtd",,L$3,$A13)   ->  96.180
+   M13  =RTD("tt.rtd",,M$3,$A13)   ->  96.150
+   N13  =RTD("tt.rtd",,N$3,$A13)   ->  96.130
+   A14  LastSide
+   B14  =RTD("tt.rtd",,B$3,$A14)   ->  None
+   C14  =RTD("tt.rtd",,C$3,$A14)   ->  None
+   D14  =RTD("tt.rtd",,D$3,$A14)   ->  None
+   E14  =RTD("tt.rtd",,E$3,$A14)   ->  BUY
+   F14  =RTD("tt.rtd",,F$3,$A14)   ->  SELL
+   G14  =RTD("tt.rtd",,G$3,$A14)   ->  BUY
+   H14  =RTD("tt.rtd",,H$3,$A14)   ->  SELL
+   I14  =RTD("tt.rtd",,I$3,$A14)   ->  SELL
+   J14  =RTD("tt.rtd",,J$3,$A14)   ->  SELL
+   K14  =RTD("tt.rtd",,K$3,$A14)   ->  SELL
+   L14  =RTD("tt.rtd",,L$3,$A14)   ->  BUY
+   M14  =RTD("tt.rtd",,M$3,$A14)   ->  SELL
+   N14  =RTD("tt.rtd",,N$3,$A14)   ->  SELL
+   A15  LastQty
+   B15  =RTD("tt.rtd",,B$3,$A15)   ->  None
+   C15  =RTD("tt.rtd",,C$3,$A15)   ->  None
+   D15  =RTD("tt.rtd",,D$3,$A15)   ->  None
+   E15  =RTD("tt.rtd",,E$3,$A15)   ->  378
+   F15  =RTD("tt.rtd",,F$3,$A15)   ->  73
+   G15  =RTD("tt.rtd",,G$3,$A15)   ->  1
+   H15  =RTD("tt.rtd",,H$3,$A15)   ->  3
+   I15  =RTD("tt.rtd",,I$3,$A15)   ->  17
+   J15  =RTD("tt.rtd",,J$3,$A15)   ->  112
+   K15  =RTD("tt.rtd",,K$3,$A15)   ->  19
+   L15  =RTD("tt.rtd",,L$3,$A15)   ->  3
+   M15  =RTD("tt.rtd",,M$3,$A15)   ->  2
+   N15  =RTD("tt.rtd",,N$3,$A15)   ->  1
+   A16  TTQ
+   B16  =RTD("tt.rtd",,B$3,$A16)   ->  None
+   C16  =RTD("tt.rtd",,C$3,$A16)   ->  None
+   D16  =RTD("tt.rtd",,D$3,$A16)   ->  None
+   E16  =RTD("tt.rtd",,E$3,$A16)   ->  101459
+   F16  =RTD("tt.rtd",,F$3,$A16)   ->  41715
+   G16  =RTD("tt.rtd",,G$3,$A16)   ->  194046
+   H16  =RTD("tt.rtd",,H$3,$A16)   ->  35445
+   I16  =RTD("tt.rtd",,I$3,$A16)   ->  111272
+   J16  =RTD("tt.rtd",,J$3,$A16)   ->  84217
+   K16  =RTD("tt.rtd",,K$3,$A16)   ->  9302
+   L16  =RTD("tt.rtd",,L$3,$A16)   ->  37592
+   M16  =RTD("tt.rtd",,M$3,$A16)   ->  15671
+   N16  =RTD("tt.rtd",,N$3,$A16)   ->  2461
+   A17  CTQ
+   B17  =RTD("tt.rtd",,B$3,$A17)   ->  None
+   C17  =RTD("tt.rtd",,C$3,$A17)   ->  None
+   D17  =RTD("tt.rtd",,D$3,$A17)   ->  None
+   E17  =RTD("tt.rtd",,E$3,$A17)   ->  425
+   F17  =RTD("tt.rtd",,F$3,$A17)   ->  74
+   G17  =RTD("tt.rtd",,G$3,$A17)   ->  1
+   H17  =RTD("tt.rtd",,H$3,$A17)   ->  23
+   I17  =RTD("tt.rtd",,I$3,$A17)   ->  17
+   J17  =RTD("tt.rtd",,J$3,$A17)   ->  450
+   K17  =RTD("tt.rtd",,K$3,$A17)   ->  66
+   L17  =RTD("tt.rtd",,L$3,$A17)   ->  1209
+   M17  =RTD("tt.rtd",,M$3,$A17)   ->  2
+   N17  =RTD("tt.rtd",,N$3,$A17)   ->  1
+   A18  Open
+   B18  =RTD("tt.rtd",,B$3,$A18)   ->  None
+   C18  =RTD("tt.rtd",,C$3,$A18)   ->  None
+   D18  =RTD("tt.rtd",,D$3,$A18)   ->  None
+   E18  =RTD("tt.rtd",,E$3,$A18)   ->  96.3775
+   F18  =RTD("tt.rtd",,F$3,$A18)   ->  96.370
+   G18  =RTD("tt.rtd",,G$3,$A18)   ->  96.350
+   H18  =RTD("tt.rtd",,H$3,$A18)   ->  96.325
+   I18  =RTD("tt.rtd",,I$3,$A18)   ->  96.295
+   J18  =RTD("tt.rtd",,J$3,$A18)   ->  96.265
+   K18  =RTD("tt.rtd",,K$3,$A18)   ->  96.200
+   L18  =RTD("tt.rtd",,L$3,$A18)   ->  96.175
+   M18  =RTD("tt.rtd",,M$3,$A18)   ->  96.140
+   N18  =RTD("tt.rtd",,N$3,$A18)   ->  96.125
+   A19  Close
+   B19  =RTD("tt.rtd",,B$3,$A19)   ->  None
+   C19  =RTD("tt.rtd",,C$3,$A19)   ->  None
+   D19  =RTD("tt.rtd",,D$3,$A19)   ->  None
+   E19  =RTD("tt.rtd",,E$3,$A19)   ->  None
+   F19  =RTD("tt.rtd",,F$3,$A19)   ->  None
+   G19  =RTD("tt.rtd",,G$3,$A19)   ->  None
+   H19  =RTD("tt.rtd",,H$3,$A19)   ->  None
+   I19  =RTD("tt.rtd",,I$3,$A19)   ->  None
+   J19  =RTD("tt.rtd",,J$3,$A19)   ->  None
+   K19  =RTD("tt.rtd",,K$3,$A19)   ->  None
+   L19  =RTD("tt.rtd",,L$3,$A19)   ->  None
+   M19  =RTD("tt.rtd",,M$3,$A19)   ->  None
+   N19  =RTD("tt.rtd",,N$3,$A19)   ->  None
+   A20  High
+   B20  =RTD("tt.rtd",,B$3,$A20)   ->  None
+   C20  =RTD("tt.rtd",,C$3,$A20)   ->  None
+   D20  =RTD("tt.rtd",,D$3,$A20)   ->  None
+   E20  =RTD("tt.rtd",,E$3,$A20)   ->  96.3775
+   F20  =RTD("tt.rtd",,F$3,$A20)   ->  96.375
+   G20  =RTD("tt.rtd",,G$3,$A20)   ->  96.360
+   H20  =RTD("tt.rtd",,H$3,$A20)   ->  96.335
+   I20  =RTD("tt.rtd",,I$3,$A20)   ->  96.300
+   J20  =RTD("tt.rtd",,J$3,$A20)   ->  96.275
+   K20  =RTD("tt.rtd",,K$3,$A20)   ->  96.215
+   L20  =RTD("tt.rtd",,L$3,$A20)   ->  96.185
+   M20  =RTD("tt.rtd",,M$3,$A20)   ->  96.160
+   N20  =RTD("tt.rtd",,N$3,$A20)   ->  96.135
+   A21  Low
+   B21  =RTD("tt.rtd",,B$3,$A21)   ->  None
+   C21  =RTD("tt.rtd",,C$3,$A21)   ->  None
+   D21  =RTD("tt.rtd",,D$3,$A21)   ->  None
+   E21  =RTD("tt.rtd",,E$3,$A21)   ->  96.3750
+   F21  =RTD("tt.rtd",,F$3,$A21)   ->  96.365
+   G21  =RTD("tt.rtd",,G$3,$A21)   ->  96.345
+   H21  =RTD("tt.rtd",,H$3,$A21)   ->  96.315
+   I21  =RTD("tt.rtd",,I$3,$A21)   ->  96.285
+   J21  =RTD("tt.rtd",,J$3,$A21)   ->  96.255
+   K21  =RTD("tt.rtd",,K$3,$A21)   ->  96.195
+   L21  =RTD("tt.rtd",,L$3,$A21)   ->  96.165
+   M21  =RTD("tt.rtd",,M$3,$A21)   ->  96.130
+   N21  =RTD("tt.rtd",,N$3,$A21)   ->  96.110
+   A22  Settle
+   B22  =RTD("tt.rtd",,B$3,$A22)   ->  None
+   C22  =RTD("tt.rtd",,C$3,$A22)   ->  None
+   D22  =RTD("tt.rtd",,D$3,$A22)   ->  None
+   E22  =RTD("tt.rtd",,E$3,$A22)   ->  96.3775
+   F22  =RTD("tt.rtd",,F$3,$A22)   ->  96.370
+   G22  =RTD("tt.rtd",,G$3,$A22)   ->  96.355
+   H22  =RTD("tt.rtd",,H$3,$A22)   ->  96.325
+   I22  =RTD("tt.rtd",,I$3,$A22)   ->  96.295
+   J22  =RTD("tt.rtd",,J$3,$A22)   ->  96.265
+   K22  =RTD("tt.rtd",,K$3,$A22)   ->  96.205
+   L22  =RTD("tt.rtd",,L$3,$A22)   ->  96.180
+   M22  =RTD("tt.rtd",,M$3,$A22)   ->  96.145
+   N22  =RTD("tt.rtd",,N$3,$A22)   ->  96.120
+   A23  Change
+   B23  =RTD("tt.rtd",,B$3,$A23)   ->  None
+   C23  =RTD("tt.rtd",,C$3,$A23)   ->  None
+   D23  =RTD("tt.rtd",,D$3,$A23)   ->  None
+   E23  =RTD("tt.rtd",,E$3,$A23)   ->  0.0000
+   F23  =RTD("tt.rtd",,F$3,$A23)   ->  -0.005
+   G23  =RTD("tt.rtd",,G$3,$A23)   ->  0.000
+   H23  =RTD("tt.rtd",,H$3,$A23)   ->  -0.005
+   I23  =RTD("tt.rtd",,I$3,$A23)   ->  -0.005
+   J23  =RTD("tt.rtd",,J$3,$A23)   ->  0.000
+   K23  =RTD("tt.rtd",,K$3,$A23)   ->  -0.005
+   L23  =RTD("tt.rtd",,L$3,$A23)   ->  0.000
+   M23  =RTD("tt.rtd",,M$3,$A23)   ->  0.005
+   N23  =RTD("tt.rtd",,N$3,$A23)   ->  0.010
+   A24  Currency
+   B24  =RTD("tt.rtd",,B$3,$A24)   ->  None
+   C24  =RTD("tt.rtd",,C$3,$A24)   ->  None
+   D24  =RTD("tt.rtd",,D$3,$A24)   ->  None
+   E24  =RTD("tt.rtd",,E$3,$A24)   ->  N/A
+   F24  =RTD("tt.rtd",,F$3,$A24)   ->  N/A
+   G24  =RTD("tt.rtd",,G$3,$A24)   ->  N/A
+   H24  =RTD("tt.rtd",,H$3,$A24)   ->  N/A
+   I24  =RTD("tt.rtd",,I$3,$A24)   ->  N/A
+   J24  =RTD("tt.rtd",,J$3,$A24)   ->  N/A
+   K24  =RTD("tt.rtd",,K$3,$A24)   ->  N/A
+   L24  =RTD("tt.rtd",,L$3,$A24)   ->  N/A
+   M24  =RTD("tt.rtd",,M$3,$A24)   ->  N/A
+   N24  =RTD("tt.rtd",,N$3,$A24)   ->  N/A
+   A25  MinPriceIncrement
+   B25  =RTD("tt.rtd",,B$3,$A25)   ->  None
+   C25  =RTD("tt.rtd",,C$3,$A25)   ->  None
+   D25  =RTD("tt.rtd",,D$3,$A25)   ->  None
+   E25  =RTD("tt.rtd",,E$3,$A25)   ->  0.25
+   F25  =RTD("tt.rtd",,F$3,$A25)   ->  0.5
+   G25  =RTD("tt.rtd",,G$3,$A25)   ->  0.5
+   H25  =RTD("tt.rtd",,H$3,$A25)   ->  0.5
+   I25  =RTD("tt.rtd",,I$3,$A25)   ->  0.5
+   J25  =RTD("tt.rtd",,J$3,$A25)   ->  0.5
+   K25  =RTD("tt.rtd",,K$3,$A25)   ->  0.5
+   L25  =RTD("tt.rtd",,L$3,$A25)   ->  0.5
+   M25  =RTD("tt.rtd",,M$3,$A25)   ->  0.5
+   N25  =RTD("tt.rtd",,N$3,$A25)   ->  0.5
+   A27  AVG PRICE
+   B27  =(B7+B8)/2   ->  #VALUE!
+   C27  =(C7+C8)/2   ->  #VALUE!
+   D27  =(D7+D8)/2   ->  #VALUE!
+   E27  =(E7+E8)/2   ->  96.376249999999999
+   F27  =(F7+F8)/2   ->  96.367500000000007
+   G27  =(G7+G8)/2   ->  96.352499999999992
+   H27  =(H7+H8)/2   ->  96.322499999999991
+   I27  =(I7+I8)/2   ->  96.292500000000004
+   J27  =(J7+J8)/2   ->  96.262500000000003
+   K27  =(K7+K8)/2   ->  96.202500000000001
+   L27  =(L7+L8)/2   ->  96.177500000000009
+   M27  =(M7+M8)/2   ->  96.152500000000003
+   N27  =(N7+N8)/2   ->  96.132499999999993
+   A28  LAST
+   B28  =B13   ->  None
+   C28  =C13   ->  None
+   D28  =D13   ->  None
+   E28  =E13   ->  96.3775
+   F28  =F13   ->  96.365
+   G28  =G13   ->  96.355
+   H28  =H13   ->  96.320
+   I28  =I13   ->  96.290
+   J28  =J13   ->  96.265
+   K28  =K13   ->  96.200
+   L28  =L13   ->  96.180
+   M28  =M13   ->  96.150
+   N28  =N13   ->  96.130
+   A29  month
+   B29  =B12   ->  None
+   C29  =C12   ->  None
+   D29  =D12   ->  None
+   E29  =E12   ->  ZQ Jun26
+   F29  =F12   ->  ZQ Jul26
+   G29  =G12   ->  ZQ Aug26
+   H29  =H12   ->  ZQ Sep26
+   I29  =I12   ->  ZQ Oct26
+   J29  =J12   ->  ZQ Nov26
+   K29  =K12   ->  ZQ Dec26
+   L29  =L12   ->  ZQ Jan27
+   M29  =M12   ->  ZQ Feb27
+   N29  =N12   ->  ZQ Mar27
+
+===== Spread
+    A1  TICKER
+    B1  ZQ price
+    C1  MEETINGS
+    D1  MONTH
+    E1  Meeting Day
+    F1  Days in Month
+    H1  Implied Rate
+    I1  Anchor Month Rate
+    K1  EFFR
+    O1  25-bp increments
+    P1  Implied
+    S1  Probabilities
+    Y1  Conditional Probabilities 
+   AP1  Aggregated
+    C2  (YYYY-MM-DD)
+    Y2  -7
+    Z2  -6
+   AA2  -5
+   AB2  -4
+   AC2  -3
+   AD2  -2
+   AE2  -1
+   AF2  0
+   AG2  1
+   AH2  2
+   AI2  3
+   AJ2  4
+   AK2  5
+   AL2  6
+   AM2  7
+    K3  SoM
+    L3  EoM
+    M3  Implied Change
+    S3  1 hike %
+    T3  Hold %
+    U3  1 cut %
+    Y3  175 - 200
+    Z3  200 - 225
+   AA3  225 - 250
+   AB3  250 - 275
+   AC3  275 - 300
+   AD3  300 - 325
+   AE3  325 - 350
+   AF3  350 - 375
+   AG3  375 - 400
+   AH3  400 - 425
+   AI3  425 - 450
+   AJ3  450 - 475
+   AK3  475 - 500
+   AL3  500 - 525
+   AM3  474 - 500
+    A4  =Sheet1!E29   ->  ZQ Jun26
+    B4  =Sheet1!E27   ->  96.376249999999999
+    C4  46190
+    D4  June
+    E4  =DAY(C4)   ->  17
+    F4  =DAY(EOMONTH(C4,0))   ->  30
+    H4  =100-B4   ->  3.6237500000000011
+    I4  =IF(ISBLANK(C4), H4, "")   ->  None
+    K4  =(F4*H4 - (F4-E4)*L4)/E4   ->  3.6178498985801295
+    L4  =K5   ->  3.6314655172413715
+    M4  =L4-K4   ->  1.3615618661241946E-2
+    O4  =M4/0.25   ->  5.4462474644967784E-2
+    P4  =IF(ABS(O4)<1,1,"ERROR")   ->  1
+    Q4  =IF(O4=0,"hold", IF(O4>0, "hike","cut"))   ->  hike
+    S4  =IF(O4>0, O4, 0%)   ->  5.4462474644967784E-2
+    T4  =IF(O4>0, 1 - O4, 1 + O4)   ->  0.94553752535503222
+    U4  =IF(O4<0, -O4, 0%)   ->  0
+    W4  June
+    Y4  0
+    Z4  0
+   AA4  0
+   AB4  0
+   AC4  0
+   AD4  0
+   AE4  =U4   ->  0
+   AF4  =T4   ->  0.94553752535503222
+   AG4  =S4   ->  5.4462474644967784E-2
+   AH4  0
+   AI4  0
+   AJ4  0
+   AK4  0
+   AL4  0
+   AM4  0
+   AO4  June
+   AP4  =Y4*Y$2 + Z4*Z$2+AA4*AA$2+AB4*AB$2+AC4*AC$2+AD4*AD$2+AE4*AE$2+AF4*AF$2+AG4*AG$2+AH4*AH$2+AI4*AI$2+AJ4*AJ$2+AK4*AK$2+AL4*AL$2+AM4*AM$2   ->  5.4462474644967784E-2
+   AQ4  June
+   AR4  =(L4-K$4)/0.25   ->  5.4462474644967784E-2
+    A5  =Sheet1!F29   ->  ZQ Jul26
+    B5  =Sheet1!F27   ->  96.367500000000007
+    C5  46232
+    D5  July
+    E5  =DAY(C5)   ->  29
+    F5  =DAY(EOMONTH(C5,0))   ->  31
+    H5  =100-B5   ->  3.6324999999999932
+    I5  =IF(ISBLANK(C5), H5, "")   ->  None
+    K5  =(F5*H5 - (F5-E5)*L5)/E5   ->  3.6314655172413715
+    L5  =K6   ->  3.647500000000008
+    M5  =L5-K5   ->  1.6034482758636504E-2
+    O5  =M5/0.25   ->  6.4137931034546014E-2
+    P5  =IF(ABS(O5)<1,1,"ERROR")   ->  1
+    Q5  =IF(O5=0,"hold", IF(O5>0, "hike","cut"))   ->  hike
+    S5  =IF(O5>0, O5, 0%)   ->  6.4137931034546014E-2
+    T5  =IF(O5>0, 1 - O5, 1 + O5)   ->  0.93586206896545399
+    U5  =IF(O5<0, -O5, 0%)   ->  0
+    W5  July
+    Y5  =Y4*$T5 + Z4*$U5+X4*$S5   ->  0
+    Z5  =Z4*$T5 + AA4*$U5+Y4*$S5   ->  0
+   AA5  =AA4*$T5 + AB4*$U5+Z4*$S5   ->  0
+   AB5  =AB4*$T5 + AC4*$U5+AA4*$S5   ->  0
+   AC5  =AC4*$T5 + AD4*$U5+AB4*$S5   ->  0
+   AD5  =AD4*$T5 + AE4*$U5+AC4*$S5   ->  0
+   AE5  =AE4*$T5 + AF4*$U5+AD4*$S5   ->  0
+   AF5  =AF4*$T5 + AG4*$U5+AE4*$S5   ->  0.88489270476323589
+   AG5  =AG4*$T5 + AH4*$U5+AF4*$S5   ->  0.11161418479401448
+   AH5  =AH4*$T5 + AI4*$U5+AG4*$S5   ->  3.4931104427496549E-3
+   AI5  =AI4*$T5 + AJ4*$U5+AH4*$S5   ->  0
+   AJ5  =AJ4*$T5 + AK4*$U5+AI4*$S5   ->  0
+   AK5  =AK4*$T5 + AL4*$U5+AJ4*$S5   ->  0
+   AL5  =AL4*$T5 + AM4*$U5+AK4*$S5   ->  0
+   AM5  =AM4*$T5 + AN4*$U5+AL4*$S5   ->  0
+   AO5  July
+   AP5  =Y5*Y$2 + Z5*Z$2+AA5*AA$2+AB5*AB$2+AC5*AC$2+AD5*AD$2+AE5*AE$2+AF5*AF$2+AG5*AG$2+AH5*AH$2+AI5*AI$2+AJ5*AJ$2+AK5*AK$2+AL5*AL$2+AM5*AM$2   ->  0.1186004056795138
+   AQ5  July
+   AR5  =(L5-K$4)/0.25   ->  0.1186004056795138
+    A6  =Sheet1!G29   ->  ZQ Aug26
+    B6  =Sheet1!G27   ->  96.352499999999992
+    D6  August
+    H6  =100-B6   ->  3.647500000000008
+    I6  =IF(ISBLANK(C6), H6, "")   ->  3.647500000000008
+    K6  =IF(ISNUMBER(I6),I6,"")   ->  3.647500000000008
+    L6  =IF(ISNUMBER(I6), I6,"")   ->  3.647500000000008
+    M6  =L6-K6   ->  0
+    O6  =M6/0.25   ->  0
+    P6  =IF(ABS(O6)<1,1,"ERROR")   ->  1
+    Q6  =IF(O6=0,"hold", IF(O6>0, "hike","cut"))   ->  hold
+    S6  =IF(O6>0, O6, 0%)   ->  0
+    T6  =IF(O6>0, 1 - O6, 1 + O6)   ->  1
+    U6  =IF(O6<0, -O6, 0%)   ->  0
+    W6  August
+    Y6  =Y5*$T6 + Z5*$U6+X5*$S6   ->  0
+    Z6  =Z5*$T6 + AA5*$U6+Y5*$S6   ->  0
+   AA6  =AA5*$T6 + AB5*$U6+Z5*$S6   ->  0
+   AB6  =AB5*$T6 + AC5*$U6+AA5*$S6   ->  0
+   AC6  =AC5*$T6 + AD5*$U6+AB5*$S6   ->  0
+   AD6  =AD5*$T6 + AE5*$U6+AC5*$S6   ->  0
+   AE6  =AE5*$T6 + AF5*$U6+AD5*$S6   ->  0
+   AF6  =AF5*$T6 + AG5*$U6+AE5*$S6   ->  0.88489270476323589
+   AG6  =AG5*$T6 + AH5*$U6+AF5*$S6   ->  0.11161418479401448
+   AH6  =AH5*$T6 + AI5*$U6+AG5*$S6   ->  3.4931104427496549E-3
+   AI6  =AI5*$T6 + AJ5*$U6+AH5*$S6   ->  0
+   AJ6  =AJ5*$T6 + AK5*$U6+AI5*$S6   ->  0
+   AK6  =AK5*$T6 + AL5*$U6+AJ5*$S6   ->  0
+   AL6  =AL5*$T6 + AM5*$U6+AK5*$S6   ->  0
+   AM6  =AM5*$T6 + AN5*$U6+AL5*$S6   ->  0
+   AO6  August
+   AP6  =Y6*Y$2 + Z6*Z$2+AA6*AA$2+AB6*AB$2+AC6*AC$2+AD6*AD$2+AE6*AE$2+AF6*AF$2+AG6*AG$2+AH6*AH$2+AI6*AI$2+AJ6*AJ$2+AK6*AK$2+AL6*AL$2+AM6*AM$2   ->  0.1186004056795138
+   AQ6  August
+   AR6  =(L6-K$4)/0.25   ->  0.1186004056795138
+    A7  =Sheet1!H29   ->  ZQ Sep26
+    B7  =Sheet1!H27   ->  96.322499999999991
+    C7  46281
+    D7  September
+    E7  =DAY(C7)   ->  16
+    F7  =DAY(EOMONTH(C7,0))   ->  30
+    H7  =100-B7   ->  3.6775000000000091
+    I7  =IF(ISBLANK(C7), H7, "")   ->  None
+    K7  =K6   ->  3.647500000000008
+    L7  =K8   ->  3.7042857142857102
+    M7  =L7-K7   ->  5.6785714285702227E-2
+    O7  =M7/0.25   ->  0.22714285714280891
+    P7  =IF(ABS(O7)<1,1,"ERROR")   ->  1
+    Q7  =IF(O7=0,"hold", IF(O7>0, "hike","cut"))   ->  hike
+    S7  =IF(O7>0, O7, 0%)   ->  0.22714285714280891
+    T7  =IF(O7>0, 1 - O7, 1 + O7)   ->  0.77285714285719109
+    U7  =IF(O7<0, -O7, 0%)   ->  0
+    W7  September
+    Y7  =Y6*$T7 + Z6*$U7+X6*$S7   ->  0
+    Z7  =Z6*$T7 + AA6*$U7+Y6*$S7   ->  0
+   AA7  =AA6*$T7 + AB6*$U7+Z6*$S7   ->  0
+   AB7  =AB6*$T7 + AC6*$U7+AA6*$S7   ->  0
+   AC7  =AC6*$T7 + AD6*$U7+AB6*$S7   ->  0
+   AD7  =AD6*$T7 + AE6*$U7+AC6*$S7   ->  0
+   AE7  =AE6*$T7 + AF6*$U7+AD6*$S7   ->  0
+   AF7  =AF6*$T7 + AG6*$U7+AE6*$S7   ->  0.68389564753848642
+   AG7  =AG6*$T7 + AH6*$U7+AF6*$S7   ->  0.28725887718698606
+   AH7  =AH6*$T7 + AI6*$U7+AG6*$S7   ->  2.8052040188246023E-2
+   AI7  =AI6*$T7 + AJ6*$U7+AH6*$S7   ->  7.9343508628153888E-4
+   AJ7  =AJ6*$T7 + AK6*$U7+AI6*$S7   ->  0
+   AK7  =AK6*$T7 + AL6*$U7+AJ6*$S7   ->  0
+   AL7  =AL6*$T7 + AM6*$U7+AK6*$S7   ->  0
+   AM7  =AM6*$T7 + AN6*$U7+AL6*$S7   ->  0
+   AO7  September
+   AP7  =Y7*Y$2 + Z7*Z$2+AA7*AA$2+AB7*AB$2+AC7*AC$2+AD7*AD$2+AE7*AE$2+AF7*AF$2+AG7*AG$2+AH7*AH$2+AI7*AI$2+AJ7*AJ$2+AK7*AK$2+AL7*AL$2+AM7*AM$2   ->  0.34574326282232276
+   AQ7  September
+   AR7  =(L7-K$4)/0.25   ->  0.34574326282232271
+    A8  =Sheet1!I29   ->  ZQ Oct26
+    B8  =Sheet1!I27   ->  96.292500000000004
+    C8  46323
+    D8  October
+    E8  =DAY(C8)   ->  28
+    F8  =DAY(EOMONTH(C8,0))   ->  31
+    H8  =100-B8   ->  3.707499999999996
+    I8  =IF(ISBLANK(C8), H8, "")   ->  None
+    K8  =(F8*H8 - (F8-E8)*L8)/E8   ->  3.7042857142857102
+    L8  =K9   ->  3.7374999999999972
+    M8  =L8-K8   ->  3.3214285714286973E-2
+    O8  =M8/0.25   ->  0.13285714285714789
+    P8  =IF(ABS(O8)<1,1,"ERROR")   ->  1
+    Q8  =IF(O8=0,"hold", IF(O8>0, "hike","cut"))   ->  hike
+    S8  =IF(O8>0, O8, 0%)   ->  0.13285714285714789
+    T8  =IF(O8>0, 1 - O8, 1 + O8)   ->  0.86714285714285211
+    U8  =IF(O8<0, -O8, 0%)   ->  0
+    W8  October
+    Y8  =Y7*$T8 + Z7*$U8+X7*$S8   ->  0
+    Z8  =Z7*$T8 + AA7*$U8+Y7*$S8   ->  0
+   AA8  =AA7*$T8 + AB7*$U8+Z7*$S8   ->  0
+   AB8  =AB7*$T8 + AC7*$U8+AA7*$S8   ->  0
+   AC8  =AC7*$T8 + AD7*$U8+AB7*$S8   ->  0
+   AD8  =AD7*$T8 + AE7*$U8+AC7*$S8   ->  0
+   AE8  =AE7*$T8 + AF7*$U8+AD7*$S8   ->  0
+   AF8  =AF7*$T8 + AG7*$U8+AE7*$S8   ->  0.59303522579408408
+   AG8  =AG7*$T8 + AH7*$U8+AF7*$S8   ->  0.33995490524797312
+   AH8  =AH7*$T8 + AI7*$U8+AG7*$S8   ->  6.2489519960937073E-2
+   AI8  =AI7*$T8 + AJ7*$U8+AH7*$S8   ->  4.4149354783998146E-3
+   AJ8  =AJ7*$T8 + AK7*$U8+AI7*$S8   ->  1.0541351860597987E-4
+   AK8  =AK7*$T8 + AL7*$U8+AJ7*$S8   ->  0
+   AL8  =AL7*$T8 + AM7*$U8+AK7*$S8   ->  0
+   AM8  =AM7*$T8 + AN7*$U8+AL7*$S8   ->  0
+   AO8  October
+   AP8  =Y8*Y$2 + Z8*Z$2+AA8*AA$2+AB8*AB$2+AC8*AC$2+AD8*AD$2+AE8*AE$2+AF8*AF$2+AG8*AG$2+AH8*AH$2+AI8*AI$2+AJ8*AJ$2+AK8*AK$2+AL8*AL$2+AM8*AM$2   ->  0.4786004056794706
+   AQ8  October
+   AR8  =(L8-K$4)/0.25   ->  0.4786004056794706
+    A9  =Sheet1!J29   ->  ZQ Nov26
+    B9  =Sheet1!J27   ->  96.262500000000003
+    D9  November
+    H9  =100-B9   ->  3.7374999999999972
+    I9  =IF(ISBLANK(C9), H9, "")   ->  3.7374999999999972
+    K9  =IF(ISNUMBER(I9),I9,"")   ->  3.7374999999999972
+    L9  =IF(ISNUMBER(I9), I9,"")   ->  3.7374999999999972
+    M9  =L9-K9   ->  0
+    O9  =M9/0.25   ->  0
+    P9  =IF(ABS(O9)<1,1,"ERROR")   ->  1
+    Q9  =IF(O9=0,"hold", IF(O9>0, "hike","cut"))   ->  hold
+    S9  =IF(O9>0, O9, 0%)   ->  0
+    T9  =IF(O9>0, 1 - O9, 1 + O9)   ->  1
+    U9  =IF(O9<0, -O9, 0%)   ->  0
+    W9  November
+    Y9  =Y8*$T9 + Z8*$U9+X8*$S9   ->  0
+    Z9  =Z8*$T9 + AA8*$U9+Y8*$S9   ->  0
+   AA9  =AA8*$T9 + AB8*$U9+Z8*$S9   ->  0
+   AB9  =AB8*$T9 + AC8*$U9+AA8*$S9   ->  0
+   AC9  =AC8*$T9 + AD8*$U9+AB8*$S9   ->  0
+   AD9  =AD8*$T9 + AE8*$U9+AC8*$S9   ->  0
+   AE9  =AE8*$T9 + AF8*$U9+AD8*$S9   ->  0
+   AF9  =AF8*$T9 + AG8*$U9+AE8*$S9   ->  0.59303522579408408
+   AG9  =AG8*$T9 + AH8*$U9+AF8*$S9   ->  0.33995490524797312
+   AH9  =AH8*$T9 + AI8*$U9+AG8*$S9   ->  6.2489519960937073E-2
+   AI9  =AI8*$T9 + AJ8*$U9+AH8*$S9   ->  4.4149354783998146E-3
+   AJ9  =AJ8*$T9 + AK8*$U9+AI8*$S9   ->  1.0541351860597987E-4
+   AK9  =AK8*$T9 + AL8*$U9+AJ8*$S9   ->  0
+   AL9  =AL8*$T9 + AM8*$U9+AK8*$S9   ->  0
+   AM9  =AM8*$T9 + AN8*$U9+AL8*$S9   ->  0
+   AO9  November
+   AP9  =Y9*Y$2 + Z9*Z$2+AA9*AA$2+AB9*AB$2+AC9*AC$2+AD9*AD$2+AE9*AE$2+AF9*AF$2+AG9*AG$2+AH9*AH$2+AI9*AI$2+AJ9*AJ$2+AK9*AK$2+AL9*AL$2+AM9*AM$2   ->  0.4786004056794706
+   AQ9  November
+   AR9  =(L9-K$4)/0.25   ->  0.4786004056794706
+   A10  =Sheet1!K29   ->  ZQ Dec26
+   B10  =Sheet1!K27   ->  96.202500000000001
+   C10  46365
+   D10  December
+   E10  =DAY(C10)   ->  9
+   F10  =DAY(EOMONTH(C10,0))   ->  31
+   H10  =100-B10   ->  3.7974999999999994
+   I10  =IF(ISBLANK(C10), H10, "")   ->  None
+   K10  =K9   ->  3.7374999999999972
+   L10  =(H10*F10-E10*K10)/(F10-E10)   ->  3.8220454545454547
+   M10  =L10-K10   ->  8.4545454545457588E-2
+   O10  =M10/0.25   ->  0.33818181818183035
+   P10  =IF(ABS(O10)<1,1,"ERROR")   ->  1
+   Q10  =IF(O10=0,"hold", IF(O10>0, "hike","cut"))   ->  hike
+   S10  =IF(O10>0, O10, 0%)   ->  0.33818181818183035
+   T10  =IF(O10>0, 1 - O10, 1 + O10)   ->  0.66181818181816965
+   U10  =IF(O10<0, -O10, 0%)   ->  0
+   W10  December
+   Y10  =Y9*$T10 + Z9*$U10+X9*$S10   ->  0
+   Z10  =Z9*$T10 + AA9*$U10+Y9*$S10   ->  0
+  AA10  =AA9*$T10 + AB9*$U10+Z9*$S10   ->  0
+  AB10  =AB9*$T10 + AC9*$U10+AA9*$S10   ->  0
+  AC10  =AC9*$T10 + AD9*$U10+AB9*$S10   ->  0
+  AD10  =AD9*$T10 + AE9*$U10+AC9*$S10   ->  0
+  AE10  =AE9*$T10 + AF9*$U10+AD9*$S10   ->  0
+  AF10  =AF9*$T10 + AG9*$U10+AE9*$S10   ->  0.39248149488916845
+  AG10  =AG9*$T10 + AH9*$U10+AF9*$S10   ->  0.42554206819629736
+  AH10  =AH9*$T10 + AI9*$U10+AG9*$S10   ->  0.15632326843982899
+  AI10  =AI9*$T10 + AJ9*$U10+AH9*$S10   ->  2.4054704048858577E-2
+  AJ10  =AJ9*$T10 + AK9*$U10+AI9*$S10   ->  1.5628154904635835E-3
+  AK10  =AK9*$T10 + AL9*$U10+AJ9*$S10   ->  3.5648935383114478E-5
+  AL10  =AL9*$T10 + AM9*$U10+AK9*$S10   ->  0
+  AM10  =AM9*$T10 + AN9*$U10+AL9*$S10   ->  0
+  AO10  December
+  AP10  =Y10*Y$2 + Z10*Z$2+AA10*AA$2+AB10*AB$2+AC10*AC$2+AD10*AD$2+AE10*AE$2+AF10*AF$2+AG10*AG$2+AH10*AH$2+AI10*AI$2+AJ10*AJ$2+AK10*AK$2+AL10*AL$2+AM10*AM$2   ->  0.81678222386130095
+  AQ10  December
+  AR10  =(L10-K$4)/0.25   ->  0.81678222386130095
+   A11  =Sheet1!L29   ->  ZQ Jan27
+   B11  =Sheet1!L27   ->  96.177500000000009
+   C11  46414
+   D11  January
+   E11  =DAY(C11)   ->  27
+   F11  =DAY(EOMONTH(C11,0))   ->  31
+   H11  =100-B11   ->  3.8224999999999909
+   I11  =IF(ISBLANK(C11), H11, "")   ->  None
+   K11  =(F11*H11 - (F11-E11)*L11)/E11   ->  3.8187962962962865
+   L11  =K12   ->  3.8474999999999966
+   M11  =L11-K11   ->  2.8703703703710115E-2
+   O11  =M11/0.25   ->  0.11481481481484046
+   P11  =IF(ABS(O11)<1,1,"ERROR")   ->  1
+   Q11  =IF(O11=0,"hold", IF(O11>0, "hike","cut"))   ->  hike
+   S11  =IF(O11>0, O11, 0%)   ->  0.11481481481484046
+   T11  =IF(O11>0, 1 - O11, 1 + O11)   ->  0.88518518518515954
+   U11  =IF(O11<0, -O11, 0%)   ->  0
+   W11  January
+   Y11  =Y10*$T11 + Z10*$U11+X10*$S11   ->  0
+   Z11  =Z10*$T11 + AA10*$U11+Y10*$S11   ->  0
+  AA11  =AA10*$T11 + AB10*$U11+Z10*$S11   ->  0
+  AB11  =AB10*$T11 + AC10*$U11+AA10*$S11   ->  0
+  AC11  =AC10*$T11 + AD10*$U11+AB10*$S11   ->  0
+  AD11  =AD10*$T11 + AE10*$U11+AC10*$S11   ->  0
+  AE11  =AE10*$T11 + AF10*$U11+AD10*$S11   ->  0
+  AF11  =AF10*$T11 + AG10*$U11+AE10*$S11   ->  0.3474188047352168
+  AG11  =AG10*$T11 + AH10*$U11+AF10*$S11   ->  0.42174622459436689
+  AH11  =AH10*$T11 + AI10*$U11+AG10*$S11   ->  0.18723357507854152
+  AI11  =AI10*$T11 + AJ10*$U11+AH10*$S11   ->  3.9241094775232646E-2
+  AJ11  =AJ10*$T11 + AK10*$U11+AI10*$S11   ->  4.1452175101317334E-3
+  AK11  =AK10*$T11 + AL10*$U11+AJ10*$S11   ->  2.1099028059609639E-4
+  AL11  =AL10*$T11 + AM10*$U11+AK10*$S11   ->  4.0930259143585027E-6
+  AM11  =AM10*$T11 + AN10*$U11+AL10*$S11   ->  0
+  AO11  January
+  AP11  =Y11*Y$2 + Z11*Z$2+AA11*AA$2+AB11*AB$2+AC11*AC$2+AD11*AD$2+AE11*AE$2+AF11*AF$2+AG11*AG$2+AH11*AH$2+AI11*AI$2+AJ11*AJ$2+AK11*AK$2+AL11*AL$2+AM11*AM$2   ->  0.93159703867614141
+  AQ11  January
+  AR11  =(L11-K$4)/0.25   ->  0.91860040567946832
+   A12  =Sheet1!M29   ->  ZQ Feb27
+   B12  =Sheet1!M27   ->  96.152500000000003
+   D12  February
+   H12  =100-B12   ->  3.8474999999999966
+   I12  =IF(ISBLANK(C12), H12, "")   ->  3.8474999999999966
+   K12  =IF(ISNUMBER(I12),I12,"")   ->  3.8474999999999966
+   L12  =IF(ISNUMBER(I12), I12,"")   ->  3.8474999999999966
+   M12  =L12-K12   ->  0
+   O12  =M12/0.25   ->  0
+   P12  =IF(ABS(O12)<1,1,"ERROR")   ->  1
+   Q12  =IF(O12=0,"hold", IF(O12>0, "hike","cut"))   ->  hold
+   S12  =IF(O12>0, O12, 0%)   ->  0
+   T12  =IF(O12>0, 1 - O12, 1 + O12)   ->  1
+   U12  =IF(O12<0, -O12, 0%)   ->  0
+   W12  February
+   Y12  =Y11*$T12 + Z11*$U12+X11*$S12   ->  0
+   Z12  =Z11*$T12 + AA11*$U12+Y11*$S12   ->  0
+  AA12  =AA11*$T12 + AB11*$U12+Z11*$S12   ->  0
+  AB12  =AB11*$T12 + AC11*$U12+AA11*$S12   ->  0
+  AC12  =AC11*$T12 + AD11*$U12+AB11*$S12   ->  0
+  AD12  =AD11*$T12 + AE11*$U12+AC11*$S12   ->  0
+  AE12  =AE11*$T12 + AF11*$U12+AD11*$S12   ->  0
+  AF12  =AF11*$T12 + AG11*$U12+AE11*$S12   ->  0.3474188047352168
+  AG12  =AG11*$T12 + AH11*$U12+AF11*$S12   ->  0.42174622459436689
+  AH12  =AH11*$T12 + AI11*$U12+AG11*$S12   ->  0.18723357507854152
+  AI12  =AI11*$T12 + AJ11*$U12+AH11*$S12   ->  3.9241094775232646E-2
+  AJ12  =AJ11*$T12 + AK11*$U12+AI11*$S12   ->  4.1452175101317334E-3
+  AK12  =AK11*$T12 + AL11*$U12+AJ11*$S12   ->  2.1099028059609639E-4
+  AL12  =AL11*$T12 + AM11*$U12+AK11*$S12   ->  4.0930259143585027E-6
+  AM12  =AM11*$T12 + AN11*$U12+AL11*$S12   ->  0
+  AO12  February
+  AP12  =Y12*Y$2 + Z12*Z$2+AA12*AA$2+AB12*AB$2+AC12*AC$2+AD12*AD$2+AE12*AE$2+AF12*AF$2+AG12*AG$2+AH12*AH$2+AI12*AI$2+AJ12*AJ$2+AK12*AK$2+AL12*AL$2+AM12*AM$2   ->  0.93159703867614141
+  AQ12  February
+  AR12  =(L12-K$4)/0.25   ->  0.91860040567946832
+   A13  =Sheet1!N29   ->  ZQ Mar27
+   B13  =Sheet1!N27   ->  96.132499999999993
+   C13  46463
+   D13  March
+   E13  =DAY(C13)   ->  17
+   F13  =DAY(EOMONTH(C13,0))   ->  31
+   H13  =100-B13   ->  3.8675000000000068
+   K13  =K12   ->  3.8474999999999966
+   L13  =(F13*H13 - (E13)*K13)/(F13-E13)   ->  3.8917857142857337
+   M13  =L13-K13   ->  4.4285714285737132E-2
+   O13  =M13/0.25   ->  0.17714285714294853
+   P13  =IF(ABS(O13)<1,1,"ERROR")   ->  1
+   Q13  =IF(O13=0,"hold", IF(O13>0, "hike","cut"))   ->  hike
+   S13  =IF(O13>0, O13, 0%)   ->  0.17714285714294853
+   T13  =IF(O13>0, 1 - O13, 1 + O13)   ->  0.82285714285705147
+   U13  =IF(O13<0, -O13, 0%)   ->  0
+   W13  March
+   Y13  =Y12*$T13 + Z12*$U13+X12*$S13   ->  0
+   Z13  =Z12*$T13 + AA12*$U13+Y12*$S13   ->  0
+  AA13  =AA12*$T13 + AB12*$U13+Z12*$S13   ->  0
+  AB13  =AB12*$T13 + AC12*$U13+AA12*$S13   ->  0
+  AC13  =AC12*$T13 + AD12*$U13+AB12*$S13   ->  0
+  AD13  =AD12*$T13 + AE12*$U13+AC12*$S13   ->  0
+  AE13  =AE12*$T13 + AF12*$U13+AD12*$S13   ->  0
+  AF13  =AF12*$T13 + AG12*$U13+AE12*$S13   ->  0.28587604503923236
+  AG13  =AG12*$T13 + AH12*$U13+AF12*$S13   ->  0.4085796530764535
+  AH13  =AH12*$T13 + AI12*$U13+AG12*$S13   ->  0.22877581584993772
+  AI13  =AI12*$T13 + AJ12*$U13+AH12*$S13   ->  6.5456905571832313E-2
+  AJ13  =AJ12*$T13 + AK12*$U13+AI12*$S13   ->  1.036220148280996E-2
+  AK13  =AK12*$T13 + AL12*$U13+AJ12*$S13   ->  9.0791053268562591E-4
+  AL13  =AL12*$T13 + AM12*$U13+AK12*$S13   ->  4.0743396743713836E-5
+  AM13  =AM12*$T13 + AN12*$U13+AL12*$S13   ->  7.2505030482959454E-7
+  AO13  March
+  AP13  =Y13*Y$2 + Z13*Z$2+AA13*AA$2+AB13*AB$2+AC13*AC$2+AD13*AD$2+AE13*AE$2+AF13*AF$2+AG13*AG$2+AH13*AH$2+AI13*AI$2+AJ13*AJ$2+AK13*AK$2+AL13*AL$2+AM13*AM$2   ->  1.1087398958190902
+  AQ13  March
+  AR13  =(L13-K$4)/0.25   ->  1.0957432628224169
+  AI27   
+   X35  June
+   Y35  =(H4-L4)/0.25+AP4   ->  2.3600405679486514E-2
+   X36  July
+   Y36  =(H5-L5)/0.25+AP5   ->  5.8600405679454681E-2
+   X37  August
+   Y37  =(H6-L6)/0.25+AP6   ->  0.1186004056795138
+   X38  September
+   Y38  =(H7-L7)/0.25+AP7   ->  0.2386004056795184
+   X39  October
+   Y39  =(H8-L8)/0.25+AP8   ->  0.35860040567946605
+   X40  November
+   Y40  =(H9-L9)/0.25+AP9   ->  0.4786004056794706
+   X41  December
+   Y41  =(H10-L10)/0.25+AP10   ->  0.71860040567947969
+   X42  January
+   Y42  =(H11-L11)/0.25+AP11   ->  0.83159703867611867
+   X43  February
+   Y43  =(H12-L12)/0.25+AP12   ->  0.93159703867614141
+   X44  March
+   Y44  =(H13-L13)/0.25+AP13   ->  1.0115970386761826
